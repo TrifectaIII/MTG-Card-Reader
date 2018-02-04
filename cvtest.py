@@ -12,9 +12,9 @@ import urllib
 # real = cv2.imread('ms_ima_c.jpg')
 
 #vma = cv2.imread('rs_mm3.jpg')
-vma = cv2.imread('rs_mm3_s.jpg')
-wth = cv2.imread('rs_nme_s.jpg')
-real = cv2.imread('rs_mm3_c.jpg')
+vma = cv2.imread('TestSet1/rs_mm3.png')
+wth = cv2.imread('TestSet1/ms_ima.png')
+real = cv2.imread('TestSet1/ms_ima_c.jpg')
 
 vmag = cv2.cvtColor(vma, cv2.COLOR_BGR2GRAY)
 wthg = cv2.cvtColor(wth, cv2.COLOR_BGR2GRAY)
@@ -49,7 +49,7 @@ matches = sorted(matches, key = lambda x:x.distance)
 print(len(matches))
 test = realg
 test = cv2.drawMatches(realg,kpr,vmag,kpv,matches[:30],test, flags=2)
-plt.imshow(test),plt.show()
+#plt.imshow(test),plt.show()
 cv2.namedWindow( "Display window 1");
 cv2.imshow( "Display window 1", test );
 

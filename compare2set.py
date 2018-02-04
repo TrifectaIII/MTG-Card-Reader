@@ -1,4 +1,4 @@
-## Compare2Card - Dakota Madden-Fong
+## Compare2Set - Dakota Madden-Fong
 
 from urllib import request as urlreq
 import numpy as np

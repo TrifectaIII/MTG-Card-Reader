@@ -5,7 +5,7 @@ from mtgsdk import Supertype
 from mtgsdk import Subtype
 from mtgsdk import Changelog
 
-class Printings:
+class card_printings:
     def __init__(self, cardname):
         self.cards = Card.where(name=cardname).all()
         self.cards[:] = [card for card in self.cards if (cardname == card.name)]
