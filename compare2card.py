@@ -9,7 +9,7 @@ import math
 
 # User Provided Info
 #--------------------------------------------------------------------
-camimg = cv2.imread('TestSet1/ms_ima_c.jpg')
+camimg = cv2.imread('Set1/ms_ima_c.jpg')
 
 cardname = 'Mind Stone'
 #--------------------------------------------------------------------

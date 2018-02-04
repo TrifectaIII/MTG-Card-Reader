@@ -12,9 +12,9 @@ import urllib
 # real = cv2.imread('ms_ima_c.jpg')
 
 #vma = cv2.imread('rs_mm3.jpg')
-vma = cv2.imread('TestSet1/rs_mm3.png')
-wth = cv2.imread('TestSet1/ms_ima.png')
-real = cv2.imread('TestSet1/ms_ima_c.jpg')
+vma = cv2.imread('Set1/rs_mm3.png')
+wth = cv2.imread('Set1/ms_ima.png')
+real = cv2.imread('Set1/ms_ima_c.jpg')
 
 vmag = cv2.cvtColor(vma, cv2.COLOR_BGR2GRAY)
 wthg = cv2.cvtColor(wth, cv2.COLOR_BGR2GRAY)
