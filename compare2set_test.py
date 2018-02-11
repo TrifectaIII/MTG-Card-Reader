@@ -11,7 +11,7 @@ import os
 # User Provided Info
 #--------------------------------------------------------------------
 try:
-    camimg = cv2.imread('Set2_c/drv_c.jpg')
+    camimg = cv2.imread('Set2_c/vts_c.jpg')
     camimg2g = cv2.cvtColor(camimg, cv2.COLOR_BGR2GRAY)
 except:
     raise NameError('No such file exists')
@@ -84,9 +84,7 @@ for x in range(3):
     print("Match",(x+1),':', bestmatch,'with',printsmatcheslen[bestmatch])
     test = camimg2g
     
-    
     # test = cv2.drawMatches(camimg2g,kpr,printsimages2g[bestmatch],printskp[bestmatch],printsmatches[bestmatch][:30],test,flags=2)
-    
     
     test = cv2.drawMatchesKnn(camimg2g,kpr,printsimages2g[bestmatch],printskp[bestmatch],printsmatches[bestmatch][:30],test,flags=2)
     
