@@ -10,7 +10,7 @@ import os
 
 # User Provided Info
 #--------------------------------------------------------------------
-camimg = cv2.imread('Set1/ms_ima_c.jpg')
+camimg = cv2.imread('Set2_c/bgl_c_cropped.jpg')
 
 files = os.listdir('./Set2')
 set_images = [];
@@ -21,7 +21,7 @@ for name in files:
 camimg2g = cv2.cvtColor(camimg, cv2.COLOR_BGR2GRAY)
 
 surf = cv2.xfeatures2d.SURF_create()
-surf.setHessianThreshold(300)
+surf.setHessianThreshold(100)
 bf = cv2.BFMatcher(cv2.NORM_L1, crossCheck=True)
 
 (kpr, desr) = surf.detectAndCompute(camimg2g,None)
