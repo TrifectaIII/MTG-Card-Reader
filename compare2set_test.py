@@ -10,21 +10,28 @@ import os
 
 # User Provided Info
 #--------------------------------------------------------------------
-camimg = cv2.imread('Set2_c/bgl_c_cropped.jpg')
+camimg = cv2.imread('Set2_c/cropped/grf_c.jpg')
 
-files = os.listdir('./Set2')
+files = os.listdir('./Set2/cropped')
 set_images = [];
 for name in files:
-    set_images.append(cv2.imread('Set2/'+name))
+    set_images.append(cv2.imread('Set2/cropped/'+name))
 #--------------------------------------------------------------------
 
 camimg2g = cv2.cvtColor(camimg, cv2.COLOR_BGR2GRAY)
 
+## Surf Setup
 surf = cv2.xfeatures2d.SURF_create()
-surf.setHessianThreshold(100)
-bf = cv2.BFMatcher(cv2.NORM_L1, crossCheck=True)
-
+surf.setHessianThreshold(400)
+surf.setExtended(True)
 (kpr, desr) = surf.detectAndCompute(camimg2g,None)
+## Orb Setup
+#orb = cv2.ORB_create()
+#kpr = orb.detect(camimg2g,None)
+#kpr, desr = orb.compute(camimg2g, kpr)
+
+##Matcher Steup
+bf = cv2.BFMatcher(cv2.NORM_L1, crossCheck=True)
 
 printsimages = []
 printsimages2g = []
@@ -35,11 +42,16 @@ printsmatcheslen = []
 ## Fetch Card Images and Match Features
 for img in set_images:
     printsimages.append(img)
-
     img2g = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     printsimages2g.append(img2g)
-
+    
+    # Surf ---------------------------------------------------------------------
     (kp, des) = surf.detectAndCompute(img2g,None)
+    
+    # Orb ----------------------------------------------------------------------
+    # kp = orb.detect(img2g,None)
+    # kp, des = orb.compute(img2g, kp)
+
     printskp.append(kp)
     printsdes.append(des)
 
