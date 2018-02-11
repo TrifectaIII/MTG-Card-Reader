@@ -10,15 +10,18 @@ import os
 
 # User Provided Info
 #--------------------------------------------------------------------
-camimg = cv2.imread('Set2_c/cropped/grf_c.jpg')
+try:
+    camimg = cv2.imread('Set2_c/drv_c.jpg')
+    camimg2g = cv2.cvtColor(camimg, cv2.COLOR_BGR2GRAY)
+except:
+    raise NameError('No such file exists')
 
-files = os.listdir('./Set2/cropped')
+files = os.listdir('./Set2')
+files.remove('cropped')
 set_images = [];
 for name in files:
-    set_images.append(cv2.imread('Set2/cropped/'+name))
+    set_images.append(cv2.imread('Set2/'+name))
 #--------------------------------------------------------------------
-
-camimg2g = cv2.cvtColor(camimg, cv2.COLOR_BGR2GRAY)
 
 ## Surf Setup
 surf = cv2.xfeatures2d.SURF_create()
@@ -31,7 +34,9 @@ surf.setExtended(True)
 #kpr, desr = orb.compute(camimg2g, kpr)
 
 ##Matcher Steup
-bf = cv2.BFMatcher(cv2.NORM_L1, crossCheck=True)
+# bf = cv2.BFMatcher(cv2.NORM_L1, crossCheck=True)
+
+bf = cv2.BFMatcher()
 
 printsimages = []
 printsimages2g = []
@@ -39,6 +44,7 @@ printskp = []
 printsdes = []
 printsmatches = []
 printsmatcheslen = []
+
 ## Fetch Card Images and Match Features
 for img in set_images:
     printsimages.append(img)
@@ -55,10 +61,21 @@ for img in set_images:
     printskp.append(kp)
     printsdes.append(des)
 
-    matches = bf.match(desr,des)
-    matches = sorted(matches, key = lambda x:x.distance)
+    # BF Only ------------------------------------------------------------------
+    # matches = bf.match(desr,des)
+    # matches = sorted(matches, key = lambda x:x.distance)
+    # printsmatches.append(matches)
+    # printsmatcheslen.append(len(matches))
+    
+    # Ratio Test ---------------------------------------------------------------
+    rawmatches = bf.knnMatch(desr,des, k=2)
+    matches = []
+    for m,n in rawmatches:
+        if m.distance < 0.75*n.distance:
+            matches.append([m])
     printsmatches.append(matches)
     printsmatcheslen.append(len(matches))
+    
 
 ## Find Three Best Matches and Display
 print(printsmatcheslen)
@@ -66,7 +83,13 @@ for x in range(3):
     bestmatch = np.argmax(printsmatcheslen)
     print("Match",(x+1),':', bestmatch,'with',printsmatcheslen[bestmatch])
     test = camimg2g
-    test = cv2.drawMatches(camimg2g,kpr,printsimages2g[bestmatch],printskp[bestmatch],printsmatches[bestmatch][:30],test,flags=2)
+    
+    
+    # test = cv2.drawMatches(camimg2g,kpr,printsimages2g[bestmatch],printskp[bestmatch],printsmatches[bestmatch][:30],test,flags=2)
+    
+    
+    test = cv2.drawMatchesKnn(camimg2g,kpr,printsimages2g[bestmatch],printskp[bestmatch],printsmatches[bestmatch][:30],test,flags=2)
+    
     cv2.namedWindow(("Match "+str(x+1)));
     cv2.imshow(("Match "+str(x+1)), test );
     cv2.waitKey()
