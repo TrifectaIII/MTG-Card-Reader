@@ -89,10 +89,11 @@ def compare2set(imageinput):
         
         # test = cv2.drawMatches(camimg2g,kpr,printsimages2g[bestmatch],printskp[bestmatch],printsmatches[bestmatch][:30],test,flags=2)
         
-        test = cv2.drawMatchesKnn(camimg2g,kpr,printsimages2g[bestmatch],printskp[bestmatch],printsmatches[bestmatch][:30],test,flags=2)
+        #test = cv2.drawMatchesKnn(camimg2g,kpr,printsimages2g[bestmatch],printskp[bestmatch],printsmatches[bestmatch][:30],test,flags=2)
         if x == 0:
             cv2.namedWindow(("Match "+str(x+1)));
-            cv2.imshow(("Match "+str(x+1)), test );
+            #cv2.imshow(("Match "+str(x+1)), test );
+            cv2.imshow(("Match "+str(x+1)), printsimages[bestmatch] );
             cv2.waitKey()
     #    plt.imshow(test),plt.show()
         printsmatcheslen[bestmatch] = -math.inf
