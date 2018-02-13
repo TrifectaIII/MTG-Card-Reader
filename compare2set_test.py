@@ -11,7 +11,7 @@ import os
 # User Provided Info
 #--------------------------------------------------------------------
 try:
-    camimg = cv2.imread('Set2_c/vts_c.jpg')
+    camimg = cv2.imread('Set2_c/bgl_c.jpg')
     camimg2g = cv2.cvtColor(camimg, cv2.COLOR_BGR2GRAY)
 except:
     raise NameError('No such file exists')
@@ -19,14 +19,16 @@ except:
 files = os.listdir('./Set2')
 files.remove('cropped')
 set_images = [];
+set_names = [];
 for name in files:
     set_images.append(cv2.imread('Set2/'+name))
+    set_names.append(name[:-4])
 #--------------------------------------------------------------------
 
 ## Surf Setup
-surf = cv2.xfeatures2d.SURF_create()
-surf.setHessianThreshold(400)
-surf.setExtended(True)
+surf = cv2.xfeatures2d.SIFT_create()
+#surf.setHessianThreshold(400)
+#surf.setExtended(True)
 (kpr, desr) = surf.detectAndCompute(camimg2g,None)
 ## Orb Setup
 #orb = cv2.ORB_create()
@@ -81,7 +83,7 @@ for img in set_images:
 print(printsmatcheslen)
 for x in range(3):
     bestmatch = np.argmax(printsmatcheslen)
-    print("Match",(x+1),':', bestmatch,'with',printsmatcheslen[bestmatch])
+    print("Match",(x+1),',',set_names[bestmatch],':', bestmatch,'with',printsmatcheslen[bestmatch])
     test = camimg2g
     
     # test = cv2.drawMatches(camimg2g,kpr,printsimages2g[bestmatch],printskp[bestmatch],printsmatches[bestmatch][:30],test,flags=2)
