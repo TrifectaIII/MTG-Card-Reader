@@ -81,10 +81,11 @@ def compare2set(imageinput):
         
     
     ## Find Three Best Matches and Display
+    print("\n" * 100)
     print(printsmatcheslen)
     for x in range(3):
         bestmatch = np.argmax(printsmatcheslen)
-        print("Match",(x+1),',',set_names[bestmatch],':', bestmatch,'with',printsmatcheslen[bestmatch])
+        print("Match",(x+1),',',set_names[bestmatch],':','with',printsmatcheslen[bestmatch])
         test = camimg2g
         
         # test = cv2.drawMatches(camimg2g,kpr,printsimages2g[bestmatch],printskp[bestmatch],printsmatches[bestmatch][:30],test,flags=2)

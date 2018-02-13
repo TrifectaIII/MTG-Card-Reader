@@ -3,16 +3,24 @@ import cv2
 from compare2set import compare2set
 
 cap = cv2.VideoCapture(0)
-
-while(True):
+fin = False
+while(not fin):
     # Capture frame-by-frame
     ret, frame = cap.read()
 
     cv2.imshow('frame',frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    inp = cv2.waitKey(1) & 0xFF
+    if inp == ord('q'):
+        Fin = True
         break
-    if cv2.waitKey(1) & 0xFF == ord('c'):
+    if inp == ord('c'):
         compare2set(frame)
+        
+        
+    # if cv2.waitKey(1) & 0xFF == ord('q'):
+    #     break
+    # if cv2.waitKey(1) & 0xFF == ord('c'):
+    #     compare2set(frame)
 
 # When everything done, release the capture
 cap.release()
