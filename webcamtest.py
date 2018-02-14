@@ -4,6 +4,8 @@ from compare2set import compare2set
 
 cap = cv2.VideoCapture(0)
 fin = False
+
+compareset = compare2set('IMA')
 while(not fin):
     # Capture frame-by-frame
     ret, frame = cap.read()
@@ -11,10 +13,10 @@ while(not fin):
     cv2.imshow('frame',frame)
     inp = cv2.waitKey(1) & 0xFF
     if inp == ord('q'):
-        Fin = True
-        break
+        fin = True
     if inp == ord('c'):
-        compare2set(frame)
+        #compare2set(frame,'IMA')
+        compareset.compareimg(frame)
         
         
     # if cv2.waitKey(1) & 0xFF == ord('q'):

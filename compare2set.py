@@ -4,99 +4,75 @@ from urllib import request as urlreq
 import numpy as np
 import cv2
 from matplotlib import pyplot as plt
-from mtg_cards import card_set_json as setjson
 import math
 import os
+from fetchSetImages import fetchSetImages
+from processSetImages import processSetImages
 
-def compare2set(imageinput):
-# User Provided Info
-#--------------------------------------------------------------------
-    try:
-        camimg = imageinput
-        camimg2g = cv2.cvtColor(camimg, cv2.COLOR_BGR2GRAY)
-    except:
-        raise NameError('Cannot properly process input image')
-    
-    files = os.listdir('./Set2')
-    files.remove('cropped')
-    set_images = [];
-    set_names = [];
-    for name in files:
-        set_images.append(cv2.imread('Set2/'+name))
-        set_names.append(name[:-4])
+class compare2set:
+    def __init__(self, setcode):
+    # User Provided Info
     #--------------------------------------------------------------------
-    
-    ## Surf Setup
-    surf = cv2.xfeatures2d.SIFT_create()
-    #surf.setHessianThreshold(400)
-    #surf.setExtended(True)
-    (kpr, desr) = surf.detectAndCompute(camimg2g,None)
-    ## Orb Setup
-    #orb = cv2.ORB_create()
-    #kpr = orb.detect(camimg2g,None)
-    #kpr, desr = orb.compute(camimg2g, kpr)
-    
-    ##Matcher Steup
-    # bf = cv2.BFMatcher(cv2.NORM_L1, crossCheck=True)
-    
-    bf = cv2.BFMatcher()
-    
-    printsimages = []
-    printsimages2g = []
-    printskp = []
-    printsdes = []
-    printsmatches = []
-    printsmatcheslen = []
-    
-    ## Fetch Card Images and Match Features
-    for img in set_images:
-        printsimages.append(img)
-        img2g = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        printsimages2g.append(img2g)
+        (self.setdict, self.namedict) = fetchSetImages(setcode)
+        (self.keypdict, self.desdict, self.setdict2g) = processSetImages(self.setdict)
+        #--------------------------------------------------------------------
         
-        # Surf ---------------------------------------------------------------------
-        (kp, des) = surf.detectAndCompute(img2g,None)
+        ## Surf Setup
+        self.sift = cv2.xfeatures2d.SIFT_create()
+        #surf.setHessianThreshold(400)
+        #surf.setExtended(True)
         
-        # Orb ----------------------------------------------------------------------
-        # kp = orb.detect(img2g,None)
-        # kp, des = orb.compute(img2g, kp)
-    
-        printskp.append(kp)
-        printsdes.append(des)
-    
-        # BF Only ------------------------------------------------------------------
-        # matches = bf.match(desr,des)
-        # matches = sorted(matches, key = lambda x:x.distance)
-        # printsmatches.append(matches)
-        # printsmatcheslen.append(len(matches))
+        ##Matcher Steup
+        self.bf = cv2.BFMatcher()
         
-        # Ratio Test ---------------------------------------------------------------
-        rawmatches = bf.knnMatch(desr,des, k=2)
-        matches = []
-        for m,n in rawmatches:
-            if m.distance < 0.75*n.distance:
-                matches.append([m])
-        printsmatches.append(matches)
-        printsmatcheslen.append(len(matches))
         
-    
-    ## Find Three Best Matches and Display
-    print("\n" * 100)
-    print(printsmatcheslen)
-    for x in range(3):
-        bestmatch = np.argmax(printsmatcheslen)
-        print("Match",(x+1),',',set_names[bestmatch],':','with',printsmatcheslen[bestmatch])
-        test = camimg2g
+    def compareimg(self, imageinput):
+        try:
+            camimg = imageinput
+            camimg2g = cv2.cvtColor(camimg, cv2.COLOR_BGR2GRAY)
+        except:
+            raise NameError('Cannot properly process input image')
+            
+        (kpr, desr) = self.sift.detectAndCompute(camimg2g,None)    
         
-        # test = cv2.drawMatches(camimg2g,kpr,printsimages2g[bestmatch],printskp[bestmatch],printsmatches[bestmatch][:30],test,flags=2)
+        printsimages = []
+        printsimages2g = []
+        printskp = []
+        printsdes = []
+        printsmatches = []
+        printsmatcheslen = []
+        printsnames = []
         
-        #test = cv2.drawMatchesKnn(camimg2g,kpr,printsimages2g[bestmatch],printskp[bestmatch],printsmatches[bestmatch][:30],test,flags=2)
-        if x == 0:
-            cv2.namedWindow(("Match "+str(x+1)));
-            #cv2.imshow(("Match "+str(x+1)), test );
-            cv2.imshow(("Match "+str(x+1)), printsimages[bestmatch] );
-            cv2.waitKey()
-    #    plt.imshow(test),plt.show()
-        printsmatcheslen[bestmatch] = -math.inf
-    
-    cv2.destroyAllWindows()
+        
+        for key in self.setdict:
+            printsimages.append(self.setdict[key])
+            printsimages2g.append(self.setdict2g[key])
+            kp = self.keypdict[key]
+            des = self.desdict[key]
+            printskp.append(kp)
+            printsdes.append(des)
+            printsnames.append(self.namedict[key])
+            
+            rawmatches = self.bf.knnMatch(desr,des, k=2)
+            matches = []
+            for m,n in rawmatches:
+                if m.distance < 0.75*n.distance:
+                    matches.append([m])
+            printsmatches.append(matches)
+            printsmatcheslen.append(len(matches))
+            
+        
+        ## Find Three Best Matches and Display
+        print("\n" * 100)
+        #print(printsmatcheslen)
+        for x in range(3):
+            bestmatch = np.argmax(printsmatcheslen)
+            print("Match",(x+1),',',printsnames[bestmatch],':','with',printsmatcheslen[bestmatch])
+            if x == 0:
+                bestmatchimg = printsimages[bestmatch]
+            printsmatcheslen[bestmatch] = -math.inf
+        cv2.namedWindow("Best Match")
+        cv2.imshow('Best Match', bestmatchimg)
+        cv2.waitKey()
+        # plt.imshow(test),plt.show()
+        cv2.destroyAllWindows()
