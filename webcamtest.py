@@ -5,9 +5,8 @@ from compare2set import compare2set
 cap = cv2.VideoCapture(0)
 fin = False
 
-compareset = compare2set('MM3')
+compareset = compare2set('IMA')
 while(not fin):
-    # Capture frame-by-frame
     ret, frame = cap.read()
 
     cv2.imshow('frame',frame)
@@ -15,15 +14,7 @@ while(not fin):
     if inp == ord('q'):
         fin = True
     if inp == ord('c'):
-        #compare2set(frame,'IMA')
         compareset.compareimg(frame)
-        
-        
-    # if cv2.waitKey(1) & 0xFF == ord('q'):
-    #     break
-    # if cv2.waitKey(1) & 0xFF == ord('c'):
-    #     compare2set(frame)
 
-# When everything done, release the capture
 cap.release()
 cv2.destroyAllWindows()
