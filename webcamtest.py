@@ -2,12 +2,13 @@ import numpy as np
 import cv2
 from compare2set import compare2set
 
-cap = cv2.VideoCapture(0)
-fin = False
-
 setcode = '3ED'
 
+
 compareset = compare2set(setcode)
+
+cap = cv2.VideoCapture(0)
+fin = False
 while(not fin):
     ret, frame = cap.read()
 
