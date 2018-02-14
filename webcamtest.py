@@ -5,7 +5,7 @@ from compare2set import compare2set
 cap = cv2.VideoCapture(0)
 fin = False
 
-compareset = compare2set('IMA')
+compareset = compare2set('MM3')
 while(not fin):
     # Capture frame-by-frame
     ret, frame = cap.read()
