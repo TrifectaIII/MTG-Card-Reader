@@ -22,8 +22,8 @@ def fetchSetImages(setcode):
     setdict = dict()
     namedict = dict()
     
-    if (setcode+'.dict') not in files:
-        print(setcode +'.dict','file not found, generating from gatherer now')
+    if (setcode+'.images') not in files:
+        print(setcode +'.images','file not found, generating from gatherer now')
         set = cardset(setcode)
         for i in range(len(set.uids)):
             url = set.imgurls[i]
@@ -34,7 +34,7 @@ def fetchSetImages(setcode):
                 setdict[set.uids[i]] = img
                 print(i)
                 
-        wfile = open(('SetFiles/'+setcode +'.dict'), 'wb')
+        wfile = open(('SetFiles/'+setcode +'.images'), 'wb')
         pickle.dump(setdict, wfile)
         wfile.close()
     
@@ -51,8 +51,8 @@ def fetchSetImages(setcode):
         pickle.dump(namedict, wfile)
         wfile.close()
         
-    print(setcode +'.dict','file found')
-    rfile = open(('SetFiles/'+ setcode + '.dict'), 'rb')
+    print(setcode +'.images','file found')
+    rfile = open(('SetFiles/'+ setcode + '.images'), 'rb')
     setdictret = pickle.load(rfile)
     rfile.close()
     
