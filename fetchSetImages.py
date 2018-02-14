@@ -9,13 +9,12 @@ def fetchSetImages(setcode):
     
     files = os.listdir('./SetFiles')
     
-    set = cardset(setcode)
     setdict = dict()
     namedict = dict()
     
     if (setcode+'.dict') not in files:
-        print(setcode+'.dict','file not found, generating from gatherer now')
-
+        print(setcode +'.dict','file not found, generating from gatherer now')
+        set = cardset(setcode)
         for i in range(len(set.uids)):
             url = set.imgurls[i]
             if (url != None):
@@ -30,8 +29,8 @@ def fetchSetImages(setcode):
         wfile.close()
     
     if (setcode+'.names') not in files:
-        print(setcode+'.dict','file not found, generating from gatherer now')
-
+        print(setcode +'.dict','file not found, generating from gatherer now')
+        set = cardset(setcode)
         for i in range(len(set.uids)):
             url = set.imgurls[i]
             if (url != None):
