@@ -67,12 +67,13 @@ class compare2set:
         #print(printsmatcheslen)
         for x in range(3):
             bestmatch = np.argmax(printsmatcheslen)
-            print("Match",(x+1),',',printsnames[bestmatch],':','with',printsmatcheslen[bestmatch])
+            print("Match",(x+1),',',printsnames[bestmatch],':','with',printsmatcheslen[bestmatch],'feature matches')
             if x == 0:
+                bestmatchname = printsnames[bestmatch]
                 bestmatchimg = printsimages[bestmatch]
             printsmatcheslen[bestmatch] = -math.inf
-        cv2.namedWindow("Best Match")
-        cv2.imshow('Best Match', bestmatchimg)
+        cv2.namedWindow("Best Match: "+bestmatchname)
+        cv2.imshow("Best Match: "+bestmatchname, bestmatchimg)
         cv2.waitKey()
         # plt.imshow(test),plt.show()
         cv2.destroyAllWindows()

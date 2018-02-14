@@ -5,7 +5,9 @@ from compare2set import compare2set
 cap = cv2.VideoCapture(0)
 fin = False
 
-compareset = compare2set('IMA')
+setcode = '3ED'
+
+compareset = compare2set(setcode)
 while(not fin):
     ret, frame = cap.read()
 
