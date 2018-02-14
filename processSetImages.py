@@ -1,3 +1,11 @@
+## processSetImages - Dakota Madden-Fong
+
+# Calculates SIFT features and converts all images in a dictionary of cv2 images
+# to grayscale. 
+
+# Returns dictionaries of keypoints, desciptions, and grayscale images keyed on
+# mtgjson unique ids
+
 import numpy as np
 import cv2
 from mtg_cards import card_set_json as cardset

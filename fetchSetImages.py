@@ -1,3 +1,13 @@
+## fetchSetImages - Dakota Madden-Fong
+
+# Looks for a .dict and .names file for the specified set, if none are available
+# creates them by fetching image data based on urls provided by card_set_json
+
+# .dict is a dictionary of cv2 image files keyed on mtgjson unique ids
+# .names is a dictionary of card names keyed on mtgjson unique ids
+
+# Returns the image dictionary and the name dictionary
+
 import numpy as np
 import cv2
 from urllib import request as urlreq
