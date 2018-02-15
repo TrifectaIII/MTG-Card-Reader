@@ -13,8 +13,8 @@ class compare2set:
     def __init__(self, setcode):
     # User Provided Info
     #--------------------------------------------------------------------
-        (self.setdict, self.namedict) = fetchSetImages(setcode)
-        (self.keypdict, self.desdict, self.setdict2g) = processSetImages(self.setdict)
+        (self.imgdict, self.namedict) = fetchSetImages(setcode)
+        (self.keypdict, self.desdict, self.imgdict2g) = processSetImages(self.imgdict)
         #--------------------------------------------------------------------
         
         ## Surf Setup
@@ -44,9 +44,9 @@ class compare2set:
         printsnames = []
         
         
-        for key in self.setdict:
-            printsimages.append(self.setdict[key])
-            printsimages2g.append(self.setdict2g[key])
+        for key in self.imgdict:
+            printsimages.append(self.imgdict[key])
+            printsimages2g.append(self.imgdict2g[key])
             kp = self.keypdict[key]
             des = self.desdict[key]
             printskp.append(kp)

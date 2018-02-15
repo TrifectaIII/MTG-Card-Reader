@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 from compare2set import compare2set
 
-setcode = '3ED'
+setcode = 'MM3'
 
 
 compareset = compare2set(setcode)

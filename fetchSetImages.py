@@ -19,7 +19,7 @@ def fetchSetImages(setcode):
     
     files = os.listdir('./SetFiles')
     
-    setdict = dict()
+    imgdict = dict()
     namedict = dict()
     
     if (setcode+'.images') not in files:
@@ -31,11 +31,11 @@ def fetchSetImages(setcode):
                 url_response = urlreq.urlopen(url)
                 img_array = np.array(bytearray(url_response.read()), dtype=np.uint8)
                 img = cv2.imdecode(img_array, -1)
-                setdict[set.uids[i]] = img
+                imgdict[set.uids[i]] = img
                 print(i)
                 
         wfile = open(('SetFiles/'+setcode +'.images'), 'wb')
-        pickle.dump(setdict, wfile)
+        pickle.dump(imgdict, wfile)
         wfile.close()
     
     if (setcode+'.names') not in files:
@@ -53,7 +53,7 @@ def fetchSetImages(setcode):
         
     print(setcode +'.images','file found')
     rfile = open(('SetFiles/'+ setcode + '.images'), 'rb')
-    setdictret = pickle.load(rfile)
+    imgdictret = pickle.load(rfile)
     rfile.close()
     
     print(setcode +'.names','file found')
@@ -61,4 +61,4 @@ def fetchSetImages(setcode):
     namedictret = pickle.load(rfile)
     rfile.close()
     
-    return(setdictret,namedictret)
+    return(imgdictret,namedictret)
