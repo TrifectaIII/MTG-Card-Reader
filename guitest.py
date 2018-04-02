@@ -1,5 +1,9 @@
 from tkinter import *
 from tkinter import ttk
+import numpy as np
+import cv2
+from compare2set import compare2set
+from PIL import Image, ImageTk
 
 ## Set Up Window
 root = Tk()
@@ -7,29 +11,35 @@ root.title("MTG Card Reader")
 root.iconbitmap('MTG Blue.ico')
 root.mainloop()
 
-mainframe = ttk.Frame(root, padding="12 12 12 12")
+mainframe = ttk.Frame(root, padding="200 200 200 200")
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
 mainframe.columnconfigure(0, weight=1)
 mainframe.rowconfigure(0, weight=1)
 
 ## Tk Variables
-cardname = StringVar()
-cardset_enter = StringVar()
-cardset = StringVar()
-
+cardname = StringVar(root)
+cardset = StringVar(root)
+compareset_name = StringVar(root)
 sets = ['MM3','IMA']
+compareset_name.set('')
 
-popupMenu = OptionMenu(mainframe, cardset_enter, *sets)
-Label(mainframe, text="Choose a Set").grid(row = 1, column = 1)
+chooselabel = Label(mainframe, text="Choose a Set")
+chooselabel.grid(row = 1, column = 1)
+setlabel = Label(mainframe, text='No Set Chosen')
+setlabel.grid(row = 3, column = 1)
+popupMenu = OptionMenu(mainframe, cardset, *sets)
 popupMenu.grid(row = 2, column =1)
-setname = cardset_enter.get()
-Label(mainframe, text=setname).grid(row = 3, column = 1)
- 
 # on change dropdown value
-def change_dropdown(*args):
-    print( cardset_enter.get() )
+def cardset_change_dropdown(*args):
+    print( cardset.get() )
+    setlabel.configure(text = 'Loading')
+    
+    if cardset.get() != compareset_name.get():
+        compareset_name.set(cardset.get())
+        compareset = compare2set(cardset.get())
+        setlabel.configure(text = cardset.get())
  
 # link function to change dropdown
-cardset_enter.trace('w', change_dropdown)
+cardset.trace('w', cardset_change_dropdown)
  
 root.mainloop()

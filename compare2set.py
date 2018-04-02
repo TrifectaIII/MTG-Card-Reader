@@ -24,7 +24,7 @@ class compare2set:
         
         ##Matcher Steup
         self.bf = cv2.BFMatcher()
-        
+        print(setcode,'Set loaded')
         
     def compareimg(self, imageinput):
         try:
@@ -77,3 +77,4 @@ class compare2set:
         cv2.waitKey()
         # plt.imshow(test),plt.show()
         cv2.destroyAllWindows()
+        return printsnames[bestmatch]
