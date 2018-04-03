@@ -72,9 +72,9 @@ class compare2set:
                 bestmatchname = printsnames[bestmatch]
                 bestmatchimg = printsimages[bestmatch]
             printsmatcheslen[bestmatch] = -math.inf
-        cv2.namedWindow("Best Match: "+bestmatchname)
-        cv2.imshow("Best Match: "+bestmatchname, bestmatchimg)
-        cv2.waitKey()
+        # cv2.namedWindow("Best Match: "+bestmatchname)
+        # cv2.imshow("Best Match: "+bestmatchname, bestmatchimg)
+        # cv2.waitKey()
         # plt.imshow(test),plt.show()
         cv2.destroyAllWindows()
-        return printsnames[bestmatch]
+        return bestmatchname

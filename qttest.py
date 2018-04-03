@@ -1,15 +1,15 @@
-
 import sys
-from PyQt5.QtWidgets import QWidget, QToolTip, QMessageBox, QPushButton, QApplication, QDesktopWidget, QLabel, QHBoxLayout
-from PyQt5.QtGui import QFont, QIcon, QPixmap, QImage, QComboBox
-
-
+from PyQt5.QtWidgets import QWidget, QToolTip, QMessageBox, QPushButton, QApplication, QDesktopWidget, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QImage
+from PyQt5.QtCore import Qt
 import numpy as np
 import cv2
-
 from compare2set import compare2set
 
+
+
 class CardReader(QWidget):
+    
     
     def __init__(self):
         super().__init__()
@@ -33,9 +33,31 @@ class CardReader(QWidget):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
         
+    def read_match(self):
+        global matchname
+        global setselect
+        global cvframe
+        global compareset
+        print('Reading and Matching')
+        matchname = compareset.compareimg(cvframe)
+        
+    def switchset(self, text):
+        global matchname
+        global setselect
+        global cvframe
+        global compareset
+        print('Switching Set: ',text)
+        start = setselect.findText('None', Qt.MatchFixedString)
+        if start != -1:
+            setselect.removeItem(start)
+            matchname = 'Ready!'
+        compareset = compare2set(text)
+        matchname = 'Ready!'
+        
     
     def cvimg2qpixmap(self, cvimg):
-        qpixmap = QPixmap(QImage(cvimg, cvimg.shape[1], cvimg.shape[0], cvimg.shape[1] * 3,QImage.Format_RGB888))
+        cvimgRGB = cv2.cvtColor(cvimg, cv2.COLOR_BGR2RGB)
+        qpixmap = QPixmap(QImage(cvimgRGB, cvimgRGB.shape[1], cvimgRGB.shape[0], cvimgRGB.shape[1] * 3,QImage.Format_RGB888))
         # height, width, channel = cvimg.shape
         # bytesPerLine = 3 * width
         # qpixmap = QPixmap(QImage(cvimg.data, width, height, bytesPerLine, QImage.Format_RGB888))
@@ -43,54 +65,83 @@ class CardReader(QWidget):
     
     ## Set Up Main UI
     def initUI(self):
+        global matchname
+        global setselect
+        global cvframe
+        global compareset
+        setselect = []
+        cvframe = []
+        matchname = 'Select a Set Above'
+        compareset = []
+        
         #Set Tooltip Font
         QToolTip.setFont(QFont('SansSerif', 10))
         
         #Main Window
-        w_height = 800
-        w_width  = 600
-        w_margin = 50
-        
-        self.setGeometry(0, 0, w_height, w_width)
+        grid = QGridLayout()
+        self.setLayout(grid)
         self.center()
-        self.setWindowTitle('Icon')
+        self.setWindowTitle('MTG Card Reader')
         self.setWindowIcon(QIcon('MTG Blue.ico'))
         
-        #Read Button
-        readbtn = QPushButton('Read!', self)
-        readbtn.setToolTip('Press when your card is in the frame')
-        readbtn.resize(readbtn.sizeHint())
-        readbtn.move(50, 50)
-        
         #Set Seclection Drop Down Menu
+        setselectlab = QLabel(self)
+        setselectlab.setText('Set:')
+        grid.addWidget(setselectlab, 1,1)
+        
         setselect = QComboBox(self)
+        setselect.addItem('None')
         sets = {'MM3','IMA','MM2'}
         for set in sets:
             setselect.addItem(set)
-        
-        setselect.activated[str].connect(self.style_choice)
+        setselect.activated[str].connect(self.switchset)
+        grid.addWidget(setselect, 1,2)
         
         #Quit Button
         qbtn = QPushButton('Quit', self)
         qbtn.clicked.connect(QApplication.instance().quit)
         qbtn.resize(qbtn.sizeHint())
-        qbtn.move(w_height - w_margin, w_width - w_margin)   
+        grid.addWidget(qbtn, 1,3)
+        
+        #Read Button
+        readbtn = QPushButton('Read (R)', self)
+        readbtn.setToolTip('Press when your card is in the frame')
+        readbtn.resize(readbtn.sizeHint())
+        readbtn.clicked.connect(self.read_match)
+        grid.addWidget(readbtn, 2,1)
+        readbtn.setDefault(True)
         
         #Image Window
         imgwindow = QLabel(self)
-        imgwindow.move(150,50)
+        grid.addWidget(imgwindow, 2,2)
+        
+        cardinfov = QVBoxLayout(self)
+         
+        #Name of Matched Card
+        matchlab = QLabel(self)
+        matchlab.setText('Read a Card!')
+        cardinfov.addWidget(matchlab)
+        
+        grid.addLayout(cardinfov, 2,3)
         
         #Begin Video Capture
-        cap = cv2.VideoCapture(0)
-        ret, cvframe = cap.read()
-        qpixframe = self.cvimg2qpixmap(cvframe)
+        try:
+            cap = cv2.VideoCapture(0)
+            ret, cvframe = cap.read()
+            qpixframe = self.cvimg2qpixmap(cvframe)
+        except:
+            raise IOError('No Webcam Detected')
         imgwindow.setPixmap(qpixframe)
+        wc_height, wc_width, _ = cvframe.shape
+        readbtn.resize(wc_height, 100)
+        
         
         self.show()
         while ret:
             qpixframe=self.cvimg2qpixmap(cvframe)
             imgwindow.setPixmap(qpixframe)
             imgwindow.update()
+            matchlab.setText(matchname)
             QApplication.processEvents()
             ret,cvframe=cap.read()
     
