@@ -63,7 +63,7 @@ class compare2set:
             
         
         ## Find Three Best Matches and Display
-        print("\n" * 100)
+        #print("\n" * 100)
         #print(printsmatcheslen)
         for x in range(3):
             bestmatch = np.argmax(printsmatcheslen)

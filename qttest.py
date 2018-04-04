@@ -33,62 +33,45 @@ class CardReader(QWidget):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
         
-    def read_match(self):
-        global matchname
-        global setselect
-        global cvframe
-        global compareset
-        print('Reading and Matching')
-        matchname = compareset.compareimg(cvframe)
-        
-    def switchset(self, text):
-        global matchname
-        global setselect
-        global cvframe
-        global compareset
-        print('Switching Set: ',text)
-        start = setselect.findText('None', Qt.MatchFixedString)
-        if start != -1:
-            setselect.removeItem(start)
-            matchname = 'Ready!'
-        compareset = compare2set(text)
-        matchname = 'Ready!'
-        
     
     
     ## Set Up Main UI
     def initUI(self):
-        global setselect
-        global cvframe
-        global matchname
         global compareset
-        setselect = []
-        cvframe = []
-        matchname = 'Select a Set Above'
         compareset = []
         
-        def read_match():
-            global setselect
-            global cvframe
-            global matchname
-            global compareset
+        def read_match(c2s,cvim):
             print('Reading and Matching')
-            (matchname,matchcvimage) = compareset.compareimg(cvframe)
+            name_match_lab.setText('Matching...')
+            img_match_lab.setText(' ')
+            readbtn.setEnabled(False)
+            setselect.setEnabled(False)
+            QApplication.processEvents()
+            (matchname,matchcvimage) = c2s.compareimg(cvim)
             matchimage = cvimg2qpixmap(matchcvimage)
+            name_match_lab.setText(matchname)
             img_match_lab.setPixmap(matchimage)
-
+            
+            readbtn.setEnabled(True)
+            setselect.setEnabled(True)
+            QApplication.processEvents()
+            
         def switchset(text):
-            global setselect
-            global cvframe
-            global matchname
             global compareset
-            print('Switching Set: ',text)
+            print('Switching to Set: ',text)
+            name_match_lab.setText('Loading Set {}'.format(text))
+            img_match_lab.setText(' ')
+            readbtn.setEnabled(False)
+            setselect.setEnabled(False)
+            QApplication.processEvents()
             start = setselect.findText('None', Qt.MatchFixedString)
             if start != -1:
                 setselect.removeItem(start)
-                matchname = 'Ready!'
             compareset = compare2set(text)
-            matchname = 'Ready!'
+            name_match_lab.setText('Ready')
+            readbtn.setEnabled(True)
+            setselect.setEnabled(True)
+            QApplication.processEvents()
 
         def cvimg2qpixmap(cvimg):
             cvimgRGB = cv2.cvtColor(cvimg, cv2.COLOR_BGR2RGB)
@@ -99,6 +82,12 @@ class CardReader(QWidget):
             return qpixmap
             #Set Tooltip Font
             QToolTip.setFont(QFont('SansSerif', 10))
+            
+        def updateWC(cvimg):
+            pixmapimg = cvimg2qpixmap(cvimg)
+            imgwindow.setPixmap(pixmapimg)
+            imgwindow.update()
+            QApplication.processEvents()
         
         #Main Window
         grid = QGridLayout()
@@ -127,10 +116,11 @@ class CardReader(QWidget):
         grid.addWidget(qbtn, 1,3)
         
         #Read Button
-        readbtn = QPushButton('Read (R)', self)
+        readbtn = QPushButton('Read', self)
         readbtn.setToolTip('Press when your card is in the frame')
         readbtn.resize(readbtn.sizeHint())
-        readbtn.clicked.connect(read_match)
+        readbtn.clicked.connect(lambda:read_match(compareset,cvframe))
+        readbtn.setEnabled(False)
         grid.addWidget(readbtn, 2,1)
         readbtn.setDefault(True)
         
@@ -138,36 +128,31 @@ class CardReader(QWidget):
         imgwindow = QLabel(self)
         grid.addWidget(imgwindow, 2,2)
         
-        cardinfov = QVBoxLayout(self)
+        cardinfov = QVBoxLayout()
+        grid.addLayout(cardinfov, 2,3)
          
         #Name of Matched Card
         name_match_lab = QLabel(self)
-        name_match_lab.setText('Read a Card!')
+        name_match_lab.setText('Select a Set Above')
         cardinfov.addWidget(name_match_lab)
         
         img_match_lab = QLabel(self)
         img_match_lab.setText(' ')
         cardinfov.addWidget(img_match_lab)
         
-        grid.addLayout(cardinfov, 2,3)
         
         #Begin Video Capture
         try:
             cap = cv2.VideoCapture(0)
             ret, cvframe = cap.read()
-            qpixframe = cvimg2qpixmap(cvframe)
+            updateWC(cvframe)
         except:
-            raise IOError('No Webcam Detected')
-        imgwindow.setPixmap(qpixframe)
-        wc_height, wc_width, _ = cvframe.shape
+            raise IOError('Webcam or Image Error')
+        #wc_height, wc_width, _ = cvframe.shape
         
         self.show()
         while ret:
-            qpixframe=cvimg2qpixmap(cvframe)
-            imgwindow.setPixmap(qpixframe)
-            imgwindow.update()
-            name_match_lab.setText(matchname)
-            QApplication.processEvents()
+            updateWC(cvframe)
             ret,cvframe=cap.read()
     
         
