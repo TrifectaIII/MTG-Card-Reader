@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QWidget, QToolTip, QMessageBox, QPushButton, QApplication, QDesktopWidget, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QImage
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSlot
 import numpy as np
 import cv2
 from compare2set import compare2set
@@ -55,27 +55,50 @@ class CardReader(QWidget):
         matchname = 'Ready!'
         
     
-    def cvimg2qpixmap(self, cvimg):
-        cvimgRGB = cv2.cvtColor(cvimg, cv2.COLOR_BGR2RGB)
-        qpixmap = QPixmap(QImage(cvimgRGB, cvimgRGB.shape[1], cvimgRGB.shape[0], cvimgRGB.shape[1] * 3,QImage.Format_RGB888))
-        # height, width, channel = cvimg.shape
-        # bytesPerLine = 3 * width
-        # qpixmap = QPixmap(QImage(cvimg.data, width, height, bytesPerLine, QImage.Format_RGB888))
-        return qpixmap
     
     ## Set Up Main UI
     def initUI(self):
-        global matchname
         global setselect
         global cvframe
+        global matchname
         global compareset
         setselect = []
         cvframe = []
         matchname = 'Select a Set Above'
         compareset = []
         
-        #Set Tooltip Font
-        QToolTip.setFont(QFont('SansSerif', 10))
+        def read_match():
+            global setselect
+            global cvframe
+            global matchname
+            global compareset
+            print('Reading and Matching')
+            (matchname,matchcvimage) = compareset.compareimg(cvframe)
+            matchimage = cvimg2qpixmap(matchcvimage)
+            img_match_lab.setPixmap(matchimage)
+
+        def switchset(text):
+            global setselect
+            global cvframe
+            global matchname
+            global compareset
+            print('Switching Set: ',text)
+            start = setselect.findText('None', Qt.MatchFixedString)
+            if start != -1:
+                setselect.removeItem(start)
+                matchname = 'Ready!'
+            compareset = compare2set(text)
+            matchname = 'Ready!'
+
+        def cvimg2qpixmap(cvimg):
+            cvimgRGB = cv2.cvtColor(cvimg, cv2.COLOR_BGR2RGB)
+            qpixmap = QPixmap(QImage(cvimgRGB, cvimgRGB.shape[1], cvimgRGB.shape[0], cvimgRGB.shape[1] * 3,QImage.Format_RGB888))
+            # height, width, channel = cvimg.shape
+            # bytesPerLine = 3 * width
+            # qpixmap = QPixmap(QImage(cvimg.data, width, height, bytesPerLine, QImage.Format_RGB888))
+            return qpixmap
+            #Set Tooltip Font
+            QToolTip.setFont(QFont('SansSerif', 10))
         
         #Main Window
         grid = QGridLayout()
@@ -94,7 +117,7 @@ class CardReader(QWidget):
         sets = {'MM3','IMA','MM2'}
         for set in sets:
             setselect.addItem(set)
-        setselect.activated[str].connect(self.switchset)
+        setselect.activated[str].connect(switchset)
         grid.addWidget(setselect, 1,2)
         
         #Quit Button
@@ -107,7 +130,7 @@ class CardReader(QWidget):
         readbtn = QPushButton('Read (R)', self)
         readbtn.setToolTip('Press when your card is in the frame')
         readbtn.resize(readbtn.sizeHint())
-        readbtn.clicked.connect(self.read_match)
+        readbtn.clicked.connect(read_match)
         grid.addWidget(readbtn, 2,1)
         readbtn.setDefault(True)
         
@@ -118,9 +141,13 @@ class CardReader(QWidget):
         cardinfov = QVBoxLayout(self)
          
         #Name of Matched Card
-        matchlab = QLabel(self)
-        matchlab.setText('Read a Card!')
-        cardinfov.addWidget(matchlab)
+        name_match_lab = QLabel(self)
+        name_match_lab.setText('Read a Card!')
+        cardinfov.addWidget(name_match_lab)
+        
+        img_match_lab = QLabel(self)
+        img_match_lab.setText(' ')
+        cardinfov.addWidget(img_match_lab)
         
         grid.addLayout(cardinfov, 2,3)
         
@@ -128,20 +155,18 @@ class CardReader(QWidget):
         try:
             cap = cv2.VideoCapture(0)
             ret, cvframe = cap.read()
-            qpixframe = self.cvimg2qpixmap(cvframe)
+            qpixframe = cvimg2qpixmap(cvframe)
         except:
             raise IOError('No Webcam Detected')
         imgwindow.setPixmap(qpixframe)
         wc_height, wc_width, _ = cvframe.shape
-        readbtn.resize(wc_height, 100)
-        
         
         self.show()
         while ret:
-            qpixframe=self.cvimg2qpixmap(cvframe)
+            qpixframe=cvimg2qpixmap(cvframe)
             imgwindow.setPixmap(qpixframe)
             imgwindow.update()
-            matchlab.setText(matchname)
+            name_match_lab.setText(matchname)
             QApplication.processEvents()
             ret,cvframe=cap.read()
     

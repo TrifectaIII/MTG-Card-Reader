@@ -77,4 +77,4 @@ class compare2set:
         # cv2.waitKey()
         # plt.imshow(test),plt.show()
         cv2.destroyAllWindows()
-        return bestmatchname
+        return (bestmatchname, bestmatchimg)
