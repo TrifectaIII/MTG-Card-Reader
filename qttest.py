@@ -1,11 +1,13 @@
 import sys
-from PyQt5.QtWidgets import QWidget, QToolTip, QMessageBox, QPushButton, QApplication, QDesktopWidget, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox,  QPlainTextEdit, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QToolTip, QMessageBox, QPushButton, QApplication, QDesktopWidget, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox,  QPlainTextEdit, QSizePolicy, QFileDialog
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QImage
 from PyQt5.QtCore import Qt, pyqtSlot
 import numpy as np
 import cv2
-from compare2set import compare2set
+import time
 
+from compare2set import compare2set
+from mtg_cards import getSets
 
 
 class CardReader(QWidget):
@@ -31,7 +33,7 @@ class CardReader(QWidget):
         print(key)
     
         if key == Qt.Key_Space:
-            print('Left Arrow Pressed')
+            print('Space Pressed')
         
     def center(self):
         #Function to center the window
@@ -50,12 +52,47 @@ class CardReader(QWidget):
         
         ##Functions
         
+        def WebCamMissing():
+            reply = QMessageBox.question(self, 'Error',
+                "Webcam Error. Please make sure your webcam is connected.", QMessageBox.Ok, QMessageBox.Ok)
+                
+            sys.exit()
+        
         def addtotext(num):
+            curr_text = textbox.toPlainText()
+            #try:
             print('Adding to textbox')
-            matchname = name_match_lab.text()
-            #curr_text = 
-            textline = str(num)+' '+matchname
-            textbox.appendPlainText(textline)
+            matchname = name_match_lab.text()[6:]
+            matchname_words = matchname.split()
+            curr_text = textbox.toPlainText()
+            curr_lines = curr_text.splitlines()
+            newcard = True
+            sideboard = False
+            newline = ''
+            for line in range((len(curr_lines))-1,-1,-1):
+                line_words = curr_lines[line].split()
+                
+                if (((line_words or [' '])[0]).lower() == "sideboard"):
+                    sideboard = True
+                if ((matchname_words == line_words[1:]) and (newcard) and (not sideboard)):
+                    #print(line_words)
+                    line_words[0] = str(num + int(line_words[0]))
+                    #print(line_words)
+                    #print(curr_lines[line])
+                    #print(' '.join(line_words))
+                    curr_lines[line] = ' '.join(line_words)
+                    newcard = False
+            #print(curr_lines)
+            #print('newcard',newcard)
+            if newcard:
+                textline = str(num)+' '+matchname
+                textbox.appendPlainText(textline)
+            else:
+                new_text = '\n'.join(curr_lines)
+                textbox.setPlainText(new_text)
+            #except:
+                #print('Something went wrong with adding that card')
+                #textbox.setPlainText(curr_text)
             QApplication.processEvents()
         
         def read_match(c2s,cvim):
@@ -70,7 +107,7 @@ class CardReader(QWidget):
             QApplication.processEvents()
             (matchname,matchcvimage) = c2s.compareimg(cvim)
             matchimage = cvimg2qpixmap(matchcvimage)
-            name_match_lab.setText(matchname)
+            name_match_lab.setText('Card: '+matchname)
             img_match_lab.setPixmap(matchimage)
             readbtn.setEnabled(True)
             setselect.setEnabled(True)
@@ -82,7 +119,7 @@ class CardReader(QWidget):
         def switchset(text):
             global compareset
             print('Switching to Set: ',text)
-            name_match_lab.setText('Loading Set {}'.format(text))
+            name_match_lab.setText('Loading Set: {}'.format(text))
             img_match_lab.setPixmap(blank)
             readbtn.setEnabled(False)
             setselect.setEnabled(False)
@@ -124,7 +161,24 @@ class CardReader(QWidget):
         
         def cleartext():
             textbox.clear()
-        
+            
+        def sidetext():
+            textbox.appendPlainText('\nSideboard\n')
+            
+        def loadtext():
+            filepath,_ = QFileDialog.getOpenFileName(self, 'Open file', 'c:\\',"Text files (*.txt)")
+            file = open(filepath,'r')
+            filetext = file.read()
+            file.close()
+            textbox.setPlainText(filetext)
+            
+        def savetext():
+            curr_text = textbox.toPlainText()
+            filepath,_ = QFileDialog.getSaveFileName(self, 'Open file', 'c:\\',"Text files (*.txt)")
+            file = open(filepath,'w')
+            file.write(curr_text)
+            file.close()
+            
         ##Widgets
         
         #Main Window
@@ -142,7 +196,7 @@ class CardReader(QWidget):
         
         setselect = QComboBox(self)
         setselect.addItem('None')
-        sets = {'MM3','IMA','MM2'}
+        sets = getSets()
         for set in sets:
             setselect.addItem(set)
         setselect.activated[str].connect(switchset)
@@ -214,11 +268,30 @@ class CardReader(QWidget):
         textv = QVBoxLayout()
         grid.addLayout(textv, 1,4,2,1)
         
+        fileopth = QHBoxLayout()
+        textv.addLayout(fileopth)
+        
+        #Load Button
+        loadbtn = QPushButton('load', self)
+        loadbtn.setToolTip('load contents of a text file')
+        loadbtn.clicked.connect(loadtext)
+        fileopth.addWidget(loadbtn)
+        loadbtn.setEnabled(True)
+        loadbtn.setDefault(True)
+        
+        #Save Button
+        savebtn = QPushButton('Save', self)
+        savebtn.setToolTip('save contents to a text file')
+        savebtn.clicked.connect(savetext)
+        savebtn.setEnabled(True)
+        fileopth.addWidget(savebtn)
+        savebtn.setDefault(True)
+        
         #Text Area
         textbox = QPlainTextEdit(self)
         textboxcursor = textbox.textCursor()
         textv.addWidget(textbox)
-        
+
         textopth = QHBoxLayout()
         textv.addLayout(textopth)
         
@@ -244,6 +317,14 @@ class CardReader(QWidget):
         textopth.addWidget(clearbtn)
         clearbtn.setDefault(True)
         
+        #Side Button
+        sidebtn = QPushButton('Sideboard', self)
+        sidebtn.setToolTip('Start a sideboard')
+        sidebtn.clicked.connect(sidetext)
+        sidebtn.setEnabled(True)
+        textv.addWidget(sidebtn)
+        sidebtn.setDefault(True)
+        # 
         # #Quit Button
         # qbtn = QPushButton('Quit', self)
         # qbtn.clicked.connect(QApplication.instance().quit)
@@ -253,19 +334,19 @@ class CardReader(QWidget):
         #Begin Video Capture
         
         ##Main Camera Loop
-        
+        self.show()
         try:
             cap = cv2.VideoCapture(0)
             ret, cvframe = cap.read()
             updateWC(cvframe)
         except:
-            raise IOError('Webcam or Image Error')
+            WebCamMissing()
         #wc_height, wc_width, _ = cvframe.shape
         self.center()
-        self.show()
         while ret:
             updateWC(cvframe)
             ret,cvframe=cap.read()
+            time.sleep(0.015)
     
         
 if __name__ == '__main__':

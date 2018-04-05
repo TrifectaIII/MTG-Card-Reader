@@ -1,7 +1,10 @@
 import json
 
 jsonsets = json.loads(open('AllSets-x.json',encoding="utf8").read())
-            
+
+def getSets():
+    return list(jsonsets.keys())
+
 class card_set_json:
     def __init__(self, setcode):
         try:
