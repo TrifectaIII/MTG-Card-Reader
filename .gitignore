@@ -2,3 +2,5 @@
 *.pyc
 *.xml
 *.iml
+*.images
+*.names
