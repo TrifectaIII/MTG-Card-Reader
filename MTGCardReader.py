@@ -73,7 +73,7 @@ class MTGCardReader(QWidget):
             for line in range((len(curr_lines))-1,-1,-1):
                 line_words = curr_lines[line].split()
                 
-                if (((line_words or [' '])[0]).lower() == "sideboard"):
+                if (((line_words or [' '])[0]).lower() == "sideboard:"):
                     sideboard = True
                 if ((matchname_words == line_words[1:]) and (newcard) and (not sideboard)):
                     #print(line_words)
@@ -99,24 +99,18 @@ class MTGCardReader(QWidget):
         def read_match(c2s,cvim):
             print('Reading and Matching')
             name_match_lab.setText('Card: ')
-            statuslab.setText('Matching')
+            statuslab.setText('Reading Card...')
             img_match_lab.setPixmap(blank)
-            readbtn.setEnabled(False)
-            setselect.setEnabled(False)
-            add1btn.setEnabled(False)
-            add4btn.setEnabled(False)
-            add10btn.setEnabled(False)
+            for btn in buttons:
+                btn.setEnabled(False)
             QApplication.processEvents()
             (matchname,matchcvimage) = c2s.compareimg(cvim)
             matchimage = cvimg2qpixmap(matchcvimage)
             name_match_lab.setText('Card: '+matchname)
             img_match_lab.setPixmap(matchimage)
             statuslab.setText('Ready')
-            readbtn.setEnabled(True)
-            setselect.setEnabled(True)
-            add1btn.setEnabled(True)
-            add4btn.setEnabled(True)
-            add10btn.setEnabled(True)
+            for btn in buttons:
+                btn.setEnabled(True)
             QApplication.processEvents()
         
         oldset = ''
@@ -126,13 +120,10 @@ class MTGCardReader(QWidget):
             if not (text == oldset):
                 print('Switching to Set: ',text)
                 name_match_lab.setText('Card: ')
-                statuslab.setText('Loading Set: {}'.format(text))
+                statuslab.setText('Loading {}...'.format(text))
                 img_match_lab.setPixmap(blank)
-                readbtn.setEnabled(False)
-                setselect.setEnabled(False)
-                add1btn.setEnabled(False)
-                add4btn.setEnabled(False)
-                add10btn.setEnabled(False)
+                for btn in buttons:
+                    btn.setEnabled(False)
                 QApplication.processEvents()
                 start = setselect.findText('None', Qt.MatchFixedString)
                 if start != -1:
@@ -141,6 +132,12 @@ class MTGCardReader(QWidget):
                 statuslab.setText('Ready')
                 readbtn.setEnabled(True)
                 setselect.setEnabled(True)
+                clearbtn.setEnabled(True)
+                pastebtn.setEnabled(True)
+                copybtn.setEnabled(True)
+                sidebtn.setEnabled(True)
+                loadbtn.setEnabled(True)
+                savebtn.setEnabled(True)
                 QApplication.processEvents()
             oldset = text
 
@@ -171,7 +168,7 @@ class MTGCardReader(QWidget):
             textbox.clear()
             
         def sidetext():
-            textbox.appendPlainText('\nSideboard\n')
+            textbox.appendPlainText('\nSideboard:')
             
         def loadtext():
             filepath,_ = QFileDialog.getOpenFileName(self, 'Open file', 'c:\\',"Text files (*.txt)")
@@ -223,7 +220,7 @@ class MTGCardReader(QWidget):
         
         statuslab = QLabel(self)
         statuslab.setText('Choose a Set')
-        statuslab.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+        statuslab.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         setinfoh.addWidget(statuslab)
         
         #Read Button
@@ -349,6 +346,8 @@ class MTGCardReader(QWidget):
         textv.addWidget(sidebtn)
         sidebtn.setDefault(True)
         # 
+        
+        buttons = [sidebtn,clearbtn,pastebtn,copybtn,savebtn,loadbtn,add10btn,add4btn,add1btn,readbtn,setselect]
         # #Quit Button
         # qbtn = QPushButton('Quit', self)
         # qbtn.clicked.connect(QApplication.instance().quit)
