@@ -10,7 +10,7 @@ from compare2set import compare2set
 from mtg_cards import getSets
 
 
-class CardReader(QWidget):
+class MTGCardReader(QWidget):
     
     
     def __init__(self):
@@ -352,5 +352,5 @@ class CardReader(QWidget):
 if __name__ == '__main__':
     
     app = QApplication(sys.argv)
-    cr = CardReader()
+    cr = MTGCardReader()
     sys.exit(app.exec_())
