@@ -11,8 +11,6 @@ from mtg_cards import getSets
 
 
 class MTGCardReader(QWidget):
-    
-    
     def __init__(self):
         super().__init__()
         
@@ -20,8 +18,8 @@ class MTGCardReader(QWidget):
         
     def closeEvent(self, event):
         #Handles qutting when using the top-right X
-        reply = QMessageBox.question(self, 'Quitting',
-            "Are you sure to quit?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        reply = QMessageBox.question(self, 'Quitting?',
+            "Do you want to quit?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 
         if reply == QMessageBox.Yes:
             event.accept()
@@ -31,9 +29,6 @@ class MTGCardReader(QWidget):
     def keyPressEvent(self, event):
         key = event.key()
         print(key)
-    
-        if key == Qt.Key_Space:
-            print('Space Pressed')
         
     def center(self):
         #Function to center the window
@@ -147,6 +142,7 @@ class MTGCardReader(QWidget):
             return qpiximg
             
         def updateWC(cvimg):
+            cvimg = cv2.resize(cvimg, (640,480))#, fx=1, fy=1) 
             pixmapimg = cvimg2qpixmap(cvimg)
             imgwindow.setPixmap(pixmapimg)
             imgwindow.update()
@@ -364,7 +360,8 @@ class MTGCardReader(QWidget):
             updateWC(cvframe)
         except:
             WebCamMissing()
-        #wc_height, wc_width, _ = cvframe.shape
+        wc_height, wc_width, _ = cvframe.shape
+        print(wc_height, wc_width)
         self.center()
         while ret:
             updateWC(cvframe)
