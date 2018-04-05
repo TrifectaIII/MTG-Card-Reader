@@ -48,6 +48,7 @@ class MTGCardReader(QWidget):
     
     def initUI(self):
         global compareset
+        global oldset
         compareset = []
         
         ##Functions
@@ -117,27 +118,31 @@ class MTGCardReader(QWidget):
             add4btn.setEnabled(True)
             add10btn.setEnabled(True)
             QApplication.processEvents()
-            
+        
+        oldset = ''
         def switchset(text):
             global compareset
-            print('Switching to Set: ',text)
-            name_match_lab.setText('Card: ')
-            statuslab.setText('Loading Set: {}'.format(text))
-            img_match_lab.setPixmap(blank)
-            readbtn.setEnabled(False)
-            setselect.setEnabled(False)
-            add1btn.setEnabled(False)
-            add4btn.setEnabled(False)
-            add10btn.setEnabled(False)
-            QApplication.processEvents()
-            start = setselect.findText('None', Qt.MatchFixedString)
-            if start != -1:
-                setselect.removeItem(start)
-            compareset = compare2set(text)
-            statuslab.setText('Ready')
-            readbtn.setEnabled(True)
-            setselect.setEnabled(True)
-            QApplication.processEvents()
+            global oldset
+            if not (text == oldset):
+                print('Switching to Set: ',text)
+                name_match_lab.setText('Card: ')
+                statuslab.setText('Loading Set: {}'.format(text))
+                img_match_lab.setPixmap(blank)
+                readbtn.setEnabled(False)
+                setselect.setEnabled(False)
+                add1btn.setEnabled(False)
+                add4btn.setEnabled(False)
+                add10btn.setEnabled(False)
+                QApplication.processEvents()
+                start = setselect.findText('None', Qt.MatchFixedString)
+                if start != -1:
+                    setselect.removeItem(start)
+                compareset = compare2set(text)
+                statuslab.setText('Ready')
+                readbtn.setEnabled(True)
+                setselect.setEnabled(True)
+                QApplication.processEvents()
+            oldset = text
 
         def cvimg2qpixmap(cvimg):
             cvimgRGB = cv2.cvtColor(cvimg, cv2.COLOR_BGR2RGB)
