@@ -9,9 +9,16 @@ When loading up a set for the first time, the program may take 5 minutes or more
 
 
 https://mtgjson.com/
+
 https://www.python.org/
+
 https://www.riverbankcomputing.com/software/pyqt/download5
+
 http://doc.qt.io/qt-5/qt5-intro.html
+
 https://opencv.org/
+
 https://pypi.python.org/pypi/opencv-contrib-python
+
 https://docs.python.org/3/library/urllib.html
+
