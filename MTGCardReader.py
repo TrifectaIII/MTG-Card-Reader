@@ -97,7 +97,8 @@ class MTGCardReader(QWidget):
         
         def read_match(c2s,cvim):
             print('Reading and Matching')
-            name_match_lab.setText('Matching...')
+            name_match_lab.setText('Card: ')
+            statuslab.setText('Matching')
             img_match_lab.setPixmap(blank)
             readbtn.setEnabled(False)
             setselect.setEnabled(False)
@@ -109,6 +110,7 @@ class MTGCardReader(QWidget):
             matchimage = cvimg2qpixmap(matchcvimage)
             name_match_lab.setText('Card: '+matchname)
             img_match_lab.setPixmap(matchimage)
+            statuslab.setText('Ready')
             readbtn.setEnabled(True)
             setselect.setEnabled(True)
             add1btn.setEnabled(True)
@@ -119,7 +121,8 @@ class MTGCardReader(QWidget):
         def switchset(text):
             global compareset
             print('Switching to Set: ',text)
-            name_match_lab.setText('Loading Set: {}'.format(text))
+            name_match_lab.setText('Card: ')
+            statuslab.setText('Loading Set: {}'.format(text))
             img_match_lab.setPixmap(blank)
             readbtn.setEnabled(False)
             setselect.setEnabled(False)
@@ -131,7 +134,7 @@ class MTGCardReader(QWidget):
             if start != -1:
                 setselect.removeItem(start)
             compareset = compare2set(text)
-            name_match_lab.setText('Ready')
+            statuslab.setText('Ready')
             readbtn.setEnabled(True)
             setselect.setEnabled(True)
             QApplication.processEvents()
@@ -188,11 +191,14 @@ class MTGCardReader(QWidget):
         self.setWindowTitle('MTG Card Reader')
         self.setWindowIcon(QIcon('MTG Blue.ico'))
         
+        setinfoh = QHBoxLayout()
+        grid.addLayout(setinfoh, 1,2)
+        
         #Set Seclection Drop Down Menu
         setselectlab = QLabel(self)
         setselectlab.setText('Set:')
         setselectlab.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
-        grid.addWidget(setselectlab, 1,1)
+        setinfoh.addWidget(setselectlab)
         
         setselect = QComboBox(self)
         setselect.addItem('None')
@@ -200,7 +206,20 @@ class MTGCardReader(QWidget):
         for set in sets:
             setselect.addItem(set)
         setselect.activated[str].connect(switchset)
-        grid.addWidget(setselect, 1,2)
+        setinfoh.addWidget(setselect)
+        
+        
+        
+        #Status Label
+        statuslab2 = QLabel(self)
+        statuslab2.setText('Status:')
+        statuslab2.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        setinfoh.addWidget(statuslab2)
+        
+        statuslab = QLabel(self)
+        statuslab.setText('Choose a Set')
+        statuslab.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+        setinfoh.addWidget(statuslab)
         
         #Read Button
         readbtn = QPushButton('Read', self)
@@ -209,7 +228,7 @@ class MTGCardReader(QWidget):
         readbtn.clicked.connect(lambda:read_match(compareset,cvframe))
         readbtn.setEnabled(False)
         readbtn.setSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.Preferred)
-        grid.addWidget(readbtn, 2,1)
+        grid.addWidget(readbtn, 1,1,2,1)
         readbtn.setDefault(True)
         
         #Image Window
@@ -253,7 +272,7 @@ class MTGCardReader(QWidget):
          
         #Name of Matched Card
         name_match_lab = QLabel(self)
-        name_match_lab.setText('Select a Set Above')
+        name_match_lab.setText('Card: ')
         cardinfov.addWidget(name_match_lab)
         
         #Image of Matched Card
@@ -272,7 +291,7 @@ class MTGCardReader(QWidget):
         textv.addLayout(fileopth)
         
         #Load Button
-        loadbtn = QPushButton('load', self)
+        loadbtn = QPushButton('Load', self)
         loadbtn.setToolTip('load contents of a text file')
         loadbtn.clicked.connect(loadtext)
         fileopth.addWidget(loadbtn)
@@ -318,8 +337,8 @@ class MTGCardReader(QWidget):
         clearbtn.setDefault(True)
         
         #Side Button
-        sidebtn = QPushButton('Sideboard', self)
-        sidebtn.setToolTip('Start a sideboard')
+        sidebtn = QPushButton('Start Sideboard', self)
+        sidebtn.setToolTip('Start a Sideboard')
         sidebtn.clicked.connect(sidetext)
         sidebtn.setEnabled(True)
         textv.addWidget(sidebtn)
