@@ -12,7 +12,7 @@ import numpy as np
 import cv2
 from urllib import request as urlreq
 import pickle
-from mtg_cards import card_set_json as cardset
+from mtg_json_get import card_set_json as cardset
 import os
 
 def fetchSetImages(setcode):
