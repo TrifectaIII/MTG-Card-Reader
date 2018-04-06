@@ -1,13 +1,7 @@
 import sys
-from PyQt5.QtWidgets import QWidget, QToolTip, QMessageBox, QPushButton, QApplication, QDesktopWidget, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox,  QPlainTextEdit, QSizePolicy, QFileDialog, QDialog
-from PyQt5.QtGui import QFont, QIcon, QPixmap, QImage
+from PyQt5.QtWidgets import QWidget, QApplication, QDesktopWidget,  QPlainTextEdit, QFileDialog
 from PyQt5.QtCore import Qt, pyqtSlot
-import numpy as np
-import cv2
-import time
 
-from compare2set import compare2set
-from mtg_json_get import getSets
 
 class QMtgPlainTextEdit(QPlainTextEdit):
     
@@ -28,8 +22,11 @@ class QMtgPlainTextEdit(QPlainTextEdit):
         self.copy()
         self.cursor.clearSelection()
         self.setTextCursor(self.cursor)
+        
     def start_sideboard(self):
         self.appendPlainText('\nSideboard:')
+    def start_divider(self):
+        self.appendPlainText('\n==========\n')
         
     def addtotext(self,num, name_match_lab):
         print('Adding to textbox')
@@ -44,6 +41,8 @@ class QMtgPlainTextEdit(QPlainTextEdit):
             line_words = curr_lines[line].split()
             
             if (((line_words or [' '])[0]).lower() == "sideboard:"):
+                sideboard = True
+            if (((line_words or [' '])[0]).lower() == "=========="):
                 sideboard = True
             if ((matchname_words == line_words[1:]) and (newcard) and (not sideboard)):
                 #print(line_words)

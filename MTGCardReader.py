@@ -50,7 +50,6 @@ class MTGCardReader(QWidget):
         
         ##Functions
         
-        
         def read_match(c2s,cvim):
             print('Reading and Matching')
             name_match_lab.setText('Card: ')
@@ -83,14 +82,10 @@ class MTGCardReader(QWidget):
                 compareset = compare2set(text)
                 statuslab.setText('Ready')
                 #---------------------------
-                readbtn.setEnabled(True)
-                setselect.setEnabled(True)
-                clearbtn.setEnabled(True)
-                pastebtn.setEnabled(True)
-                copybtn.setEnabled(True)
-                sidebtn.setEnabled(True)
-                loadbtn.setEnabled(True)
-                savebtn.setEnabled(True)
+                setButtons(True)
+                add1btn.setEnabled(False)
+                add4btn.setEnabled(False)
+                add10btn.setEnabled(False)
                 #---------------------------
                 QApplication.processEvents()
             oldset = text
@@ -208,7 +203,7 @@ class MTGCardReader(QWidget):
         #Text Area
         textbox = QMtgPlainTextEdit(self)
         
-        ##File Options
+                ##File Options
         fileopth = QHBoxLayout()
         textv.addLayout(fileopth)
         
@@ -228,7 +223,7 @@ class MTGCardReader(QWidget):
         
         textv.addWidget(textbox)
         
-        ##Text Options
+                ##Text Options
         
         textopth = QHBoxLayout()
         textv.addLayout(textopth)
@@ -252,12 +247,22 @@ class MTGCardReader(QWidget):
         textopth.addWidget(clearbtn)
         clearbtn.setDefault(True)
         
+        divideropth = QHBoxLayout()
+        textv.addLayout(divideropth)
+        
         #Side Button
         sidebtn = QPushButton('Start Sideboard', self)
         sidebtn.setToolTip('Start a Sideboard')
         sidebtn.setEnabled(True)
-        textv.addWidget(sidebtn)
+        divideropth.addWidget(sidebtn)
         sidebtn.setDefault(True)
+        
+        #Divider Button
+        dividebtn = QPushButton('Add Divider', self)
+        dividebtn.setToolTip('Add a divider')
+        dividebtn.setEnabled(True)
+        divideropth.addWidget(dividebtn)
+        dividebtn.setDefault(True)
         
         ##Signals
         
@@ -272,9 +277,9 @@ class MTGCardReader(QWidget):
         pastebtn.clicked.connect(textbox.paste)
         clearbtn.clicked.connect(textbox.clear)
         sidebtn.clicked.connect(textbox.start_sideboard)
+        dividebtn.clicked.connect(textbox.start_divider)
         
-        
-        buttons = [sidebtn,clearbtn,pastebtn,copybtn,savebtn,loadbtn,add10btn,add4btn,add1btn,readbtn,setselect]
+        buttons = [dividebtn,sidebtn,clearbtn,pastebtn,copybtn,savebtn,loadbtn,add10btn,add4btn,add1btn,readbtn,setselect]
         
         def setButtons(state):
             for btn in buttons:
@@ -293,7 +298,10 @@ class MTGCardReader(QWidget):
         #print(wc_height, wc_width)
         self.center()
         while ret:
-            updateWC(cvframe)
+            try:
+                updateWC(cvframe)
+            except:
+                self.WebCamMissing()
             ret,cvframe=cap.read()
             time.sleep(0.015)
     
@@ -301,5 +309,5 @@ class MTGCardReader(QWidget):
 if __name__ == '__main__':
     
     app = QApplication(sys.argv)
-    cr = MTGCardReader()
+    mtg_cr = MTGCardReader()
     sys.exit(app.exec_())
