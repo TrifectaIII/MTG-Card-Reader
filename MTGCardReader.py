@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QWidget, QToolTip, QMessageBox, QPushButton, QApplication, QDesktopWidget, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox,  QPlainTextEdit, QSizePolicy, QFileDialog
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QImage
-from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtCore import Qt, pyqtSlot, QThread
 import numpy as np
 import cv2
 import time
@@ -9,6 +9,7 @@ import time
 from compare2set import compare2set
 from mtg_json_get import getSets
 from QMtgPlainTextEdit import QMtgPlainTextEdit
+from QWebcamThread import QWebcamThread
 
 class MTGCardReader(QWidget):
     def __init__(self):
@@ -102,9 +103,6 @@ class MTGCardReader(QWidget):
             imgwindow.update()
             QApplication.processEvents()
             
-            #Set Tooltip Font
-            QToolTip.setFont(QFont('SansSerif', 10))
-            
         ##Widgets
         
         ##Left Side
@@ -114,6 +112,8 @@ class MTGCardReader(QWidget):
         self.setLayout(grid)
         self.setWindowTitle('MTG Card Reader')
         self.setWindowIcon(QIcon('Mana_U.png'))
+        #Set Tooltip Font
+        QToolTip.setFont(QFont('SansSerif', 10))
         
         setinfoh = QHBoxLayout()
         grid.addLayout(setinfoh, 1,2)
@@ -264,10 +264,14 @@ class MTGCardReader(QWidget):
         divideropth.addWidget(dividebtn)
         dividebtn.setDefault(True)
         
+        
+        #Webcam Thread
+        camthread = QWebcamThread(imgwindow,self)
+        
         ##Signals
         
         setselect.activated[str].connect(switchset)
-        readbtn.clicked.connect(lambda:read_match(compareset,cvframe))
+        readbtn.clicked.connect(lambda:read_match(compareset,camthread.getFrame()))
         add1btn.clicked.connect(lambda:textbox.addtotext(1,name_match_lab))
         add4btn.clicked.connect(lambda:textbox.addtotext(4,name_match_lab))
         add10btn.clicked.connect(lambda:textbox.addtotext(10,name_match_lab))
@@ -288,22 +292,24 @@ class MTGCardReader(QWidget):
         
         ##Main Camera Loop
         self.show()
-        try:
-            cap = cv2.VideoCapture(0)
-            ret, cvframe = cap.read()
-            updateWC(cvframe)
-        except:
-            self.WebCamMissing()
+        # try:
+        #     cap = cv2.VideoCapture(0)
+        #     ret, cvframe = cap.read()
+        #     updateWC(cvframe)
+        # except:
+        #     self.WebCamMissing()
         #wc_height, wc_width, _ = cvframe.shape
         #print(wc_height, wc_width)
+        camthread.start()
+        
         self.center()
-        while ret:
-            try:
-                updateWC(cvframe)
-            except:
-                self.WebCamMissing()
-            ret,cvframe=cap.read()
-            time.sleep(0.015)
+        # while ret:
+        #     try:
+        #         updateWC(cvframe)
+        #     except:
+        #         self.WebCamMissing()
+        #     ret,cvframe=cap.read()
+        #     time.sleep(0.015)
     
         
 if __name__ == '__main__':
