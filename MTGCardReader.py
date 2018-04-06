@@ -37,12 +37,7 @@ class MTGCardReader(QWidget):
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
-        
-    def WebCamMissing(self):
-        reply = QMessageBox.question(self, 'Error',
-            "Webcam Error. Please make sure your webcam is connected.", QMessageBox.Ok, QMessageBox.Ok)
             
-        sys.exit()
     
     ## Set Up Main UI
     
@@ -57,6 +52,7 @@ class MTGCardReader(QWidget):
             statuslab.setText('Reading Card...')
             img_match_lab.setPixmap(blank)
             setButtons(False)
+            textbox.setReadOnly(True)
             QApplication.processEvents()
             (matchname,matchcvimage) = c2s.compareimg(cvim)
             matchimage = cvimg2qpixmap(matchcvimage)
@@ -64,6 +60,7 @@ class MTGCardReader(QWidget):
             img_match_lab.setPixmap(matchimage)
             statuslab.setText('Ready')
             setButtons(True)
+            textbox.setReadOnly(False)
             QApplication.processEvents()
         
         oldset = 'None'
@@ -76,6 +73,7 @@ class MTGCardReader(QWidget):
                 statuslab.setText('Loading {}...'.format(text))
                 img_match_lab.setPixmap(blank)
                 setButtons(False)
+                textbox.setReadOnly(True)
                 QApplication.processEvents()
                 start = setselect.findText('None', Qt.MatchFixedString)
                 if start != -1:
@@ -87,6 +85,7 @@ class MTGCardReader(QWidget):
                 add1btn.setEnabled(False)
                 add4btn.setEnabled(False)
                 add10btn.setEnabled(False)
+                textbox.setReadOnly(False)
                 #---------------------------
                 QApplication.processEvents()
             oldset = text
@@ -96,13 +95,8 @@ class MTGCardReader(QWidget):
             qpiximg = QPixmap(QImage(cvimgRGB, cvimgRGB.shape[1], cvimgRGB.shape[0], cvimgRGB.shape[1] * 3,QImage.Format_RGB888))
             return qpiximg
             
-        def updateWC(cvimg):
-            cvimg = cv2.resize(cvimg, (640,480))#, fx=1, fy=1) 
-            pixmapimg = cvimg2qpixmap(cvimg)
-            imgwindow.setPixmap(pixmapimg)
-            imgwindow.update()
-            QApplication.processEvents()
-            
+        def WebCamMissingDialog():
+            reply = QMessageBox.question(self, 'Webcam Error',"Webcam Error:\n\nPlease ensure that your webcam is connected,\nthen restart the program.", QMessageBox.Ok, QMessageBox.Ok)
         ##Widgets
         
         ##Left Side
@@ -283,6 +277,8 @@ class MTGCardReader(QWidget):
         sidebtn.clicked.connect(textbox.start_sideboard)
         dividebtn.clicked.connect(textbox.start_divider)
         
+        camthread.sig.connect(lambda:WebCamMissingDialog)
+        
         buttons = [dividebtn,sidebtn,clearbtn,pastebtn,copybtn,savebtn,loadbtn,add10btn,add4btn,add1btn,readbtn,setselect]
         
         def setButtons(state):
@@ -292,26 +288,9 @@ class MTGCardReader(QWidget):
         
         ##Main Camera Loop
         self.show()
-        # try:
-        #     cap = cv2.VideoCapture(0)
-        #     ret, cvframe = cap.read()
-        #     updateWC(cvframe)
-        # except:
-        #     self.WebCamMissing()
-        #wc_height, wc_width, _ = cvframe.shape
-        #print(wc_height, wc_width)
         camthread.start()
-        
         self.center()
-        # while ret:
-        #     try:
-        #         updateWC(cvframe)
-        #     except:
-        #         self.WebCamMissing()
-        #     ret,cvframe=cap.read()
-        #     time.sleep(0.015)
-    
-        
+
 if __name__ == '__main__':
     
     app = QApplication(sys.argv)
