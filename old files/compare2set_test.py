@@ -92,8 +92,8 @@ for x in range(3):
     
     cv2.namedWindow(("Match "+str(x+1)));
     cv2.imshow(("Match "+str(x+1)), test );
-    cv2.waitKey()
+    #cv2.waitKey()
 #    plt.imshow(test),plt.show()
     printsmatcheslen[bestmatch] = -math.inf
-
+cv2.waitKey()
 cv2.destroyAllWindows()
