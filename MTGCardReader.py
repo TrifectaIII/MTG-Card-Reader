@@ -113,7 +113,7 @@ class MTGCardReader(QWidget):
         grid = QGridLayout()
         self.setLayout(grid)
         self.setWindowTitle('MTG Card Reader')
-        self.setWindowIcon(QIcon('MTG Blue.ico'))
+        self.setWindowIcon(QIcon('Mana_U.png'))
         
         setinfoh = QHBoxLayout()
         grid.addLayout(setinfoh, 1,2)
