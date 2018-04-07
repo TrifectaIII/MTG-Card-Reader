@@ -277,7 +277,7 @@ class MTGCardReader(QWidget):
         sidebtn.clicked.connect(textbox.start_sideboard)
         dividebtn.clicked.connect(textbox.start_divider)
         
-        camthread.sig.connect(lambda:WebCamMissingDialog)
+        camthread.sig.connect(WebCamMissingDialog)
         
         buttons = [dividebtn,sidebtn,clearbtn,pastebtn,copybtn,savebtn,loadbtn,add10btn,add4btn,add1btn,readbtn,setselect]
         

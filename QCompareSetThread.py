@@ -9,7 +9,7 @@ import time
 from compare2set import compare2set
 from mtg_json_get import getSets
 
-class QComareSetThread(QThread):
+class QCompareSetThread(QThread):
             
     def __del__(self):
         self.wait()
@@ -19,33 +19,20 @@ class QComareSetThread(QThread):
         self.name_match_lab = name_match_lab
         self.img_match_lab = img_match_lab
         self.statuslab = statuslab
-        self.readbool = False
-        self.set = ''
-
-    def read_match(self):
-        self.readbool = True
-    def switchset(self,text):
-        self.set = text
+        self.blank = blank
         
+    def read_match(self):
+        print('Reading and Matching')
+        self.name_match_lab.setText('Card: ')
+        self.statuslab.setText('Reading Card...')
+        self.img_match_lab.setPixmap(self.blank)
+        QApplication.processEvents()
+        (matchname,matchcvimage) = c2s.compareimg(cvim)
+        matchimage = cvimg2qpixmap(matchcvimage)
+        name_match_lab.setText('Card: '+matchname)
+        img_match_lab.setPixmap(matchimage)
+        self.statuslab.setText('Ready')
+        
+    def switchset(self,text):
+    
     def run(self):
-        while True:
-            ## read_match
-            if self.readbool:
-                print('Reading and Matching')
-                self.name_match_lab.setText('Card: ')
-                self.statuslab.setText('Reading Card...')
-                self.img_match_lab.setPixmap(blank)
-                QApplication.processEvents()
-                (matchname,matchcvimage) = c2s.compareimg(cvim)
-                matchimage = cvimg2qpixmap(matchcvimage)
-                name_match_lab.setText('Card: '+matchname)
-                img_match_lab.setPixmap(matchimage)
-                self.statuslab.setText('Ready')
-                QApplication.processEvents()
-                self.readbool= False
-            
-            ## 
-            
-            if (self.set != ''):
-                
-                self.set = ''
