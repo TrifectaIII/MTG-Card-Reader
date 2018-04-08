@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QWidget, QToolTip, QMessageBox, QPushButton, QApplication, QDesktopWidget, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox,  QPlainTextEdit, QSizePolicy, QFileDialog
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QImage
-from PyQt5.QtCore import Qt, pyqtSlot, QThread
+from PyQt5.QtCore import Qt, pyqtSlot, QThread, pyqtSignal
 import numpy as np
 import cv2
 import time
@@ -10,7 +10,7 @@ from compare2set import compare2set
 from mtg_json_get import getSets
 from QMtgPlainTextEdit import QMtgPlainTextEdit
 from QWebcamThread import QWebcamThread
-
+from QCompareSetThread import QCompareSetThread
 class MTGCardReader(QWidget):
     def __init__(self):
         super().__init__()
@@ -258,14 +258,20 @@ class MTGCardReader(QWidget):
         divideropth.addWidget(dividebtn)
         dividebtn.setDefault(True)
         
+        buttons = [add10btn,add4btn,add1btn,dividebtn,sidebtn,clearbtn,pastebtn,copybtn,savebtn,loadbtn,readbtn,setselect]
         
         #Webcam Thread
         camthread = QWebcamThread(imgwindow,self)
+        #comparesetthread = QCompareSetThread(name_match_lab, img_match_lab, statuslab,setselect,blank,buttons,self)
         
         ##Signals
         
         setselect.activated[str].connect(switchset)
         readbtn.clicked.connect(lambda:read_match(compareset,camthread.getFrame()))
+        
+        # setselect.activated[str].connect(comparesetthread.switchset)
+        # readbtn.clicked.connect(lambda:comparesetthread.read_match(camthread.getFrame()))
+        
         add1btn.clicked.connect(lambda:textbox.addtotext(1,name_match_lab))
         add4btn.clicked.connect(lambda:textbox.addtotext(4,name_match_lab))
         add10btn.clicked.connect(lambda:textbox.addtotext(10,name_match_lab))
@@ -279,8 +285,6 @@ class MTGCardReader(QWidget):
         
         camthread.sig.connect(WebCamMissingDialog)
         
-        buttons = [dividebtn,sidebtn,clearbtn,pastebtn,copybtn,savebtn,loadbtn,add10btn,add4btn,add1btn,readbtn,setselect]
-        
         def setButtons(state):
             for btn in buttons:
                 btn.setEnabled(state)
@@ -289,6 +293,7 @@ class MTGCardReader(QWidget):
         ##Main Camera Loop
         self.show()
         camthread.start()
+        #comparesetthread.start()
         self.center()
 
 if __name__ == '__main__':
