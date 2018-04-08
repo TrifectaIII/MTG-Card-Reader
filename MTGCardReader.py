@@ -12,6 +12,10 @@ from QMtgPlainTextEdit import QMtgPlainTextEdit
 from QWebcamThread import QWebcamThread
 from QCompareSetThread import QCompareSetThread
 class MTGCardReader(QWidget):
+    
+    # readsig = pyqtSignal()
+    # setsig = pyqtSignal()
+    
     def __init__(self):
         super().__init__()
         
@@ -96,7 +100,7 @@ class MTGCardReader(QWidget):
             return qpiximg
             
         def WebCamMissingDialog():
-            reply = QMessageBox.question(self, 'Webcam Error',"Webcam Error:\n\nPlease ensure that your webcam is connected,\nthen restart the program.", QMessageBox.Ok, QMessageBox.Ok)
+            reply = QMessageBox.question(self, 'Webcam Error',"Webcam Error:\n\nPlease ensure that your webcam is connected, then restart the program.", QMessageBox.Ok, QMessageBox.Ok)
         ##Widgets
         
         ##Left Side
@@ -141,17 +145,22 @@ class MTGCardReader(QWidget):
         readbtn.setToolTip('Press when your card is in the frame')
         readbtn.setEnabled(False)
         readbtn.setSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.Preferred)
-        grid.addWidget(readbtn, 1,1,2,1)
+        grid.addWidget(readbtn, 1,1,3,1)
         readbtn.setDefault(True)
         
         #Image Window
         imgwindow = QLabel(self)
         grid.addWidget(imgwindow, 2,2)
         
+        #Credits
+        creditlab = QLabel(self)
+        creditlab.setText('Created By: Dakota Madden-Fong')
+        grid.addWidget(creditlab, 3,2)
+        
         ##Card Info Vert
         
         cardinfov = QVBoxLayout()
-        grid.addLayout(cardinfov, 1,3,2,1)
+        grid.addLayout(cardinfov, 1,3,3,1)
          
         #Add 1 to Text Button
         add1btn = QPushButton('Add 1', self)
@@ -192,7 +201,7 @@ class MTGCardReader(QWidget):
         ##Text Vert
         
         textv = QVBoxLayout()
-        grid.addLayout(textv, 1,4,2,1)
+        grid.addLayout(textv, 1,4,3,1)
         
         #Text Area
         textbox = QMtgPlainTextEdit(self)

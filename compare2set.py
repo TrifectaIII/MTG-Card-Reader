@@ -31,7 +31,7 @@ class compare2set:
             camimg = imageinput
             camimg2g = cv2.cvtColor(camimg, cv2.COLOR_BGR2GRAY)
         except:
-            raise NameError('Cannot properly process input image')
+            raise IOError('Cannot properly process input image')
             
         (kpr, desr) = self.sift.detectAndCompute(camimg2g,None)    
         
