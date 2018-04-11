@@ -4,6 +4,28 @@ jsonsets = json.loads(open('AllSets-x.json',encoding="utf8").read())
 
 def getSets():
     return list(jsonsets.keys())
+    
+def getSets():
+    retsets = []
+    for set in (list(jsonsets.keys())):
+        cards = jsonsets[set]['cards']
+        empties = False
+        exists = False
+        multiverse_ids = []
+        for card in cards:
+            try:
+                multiverse_ids.append(card['multiverseid'])
+                exists = True
+            except:
+                multiverse_ids.append(None)
+                empties = True
+        if (empties and (not exists)):
+            pass
+        elif (empties and exists):
+            pass
+        else:
+            retsets.append(set)
+    return retsets
 
 class card_set_json:
     def __init__(self, setcode):

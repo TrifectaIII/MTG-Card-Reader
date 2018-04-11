@@ -116,6 +116,11 @@ class MTGCardReader(QWidget):
         setinfoh = QHBoxLayout()
         grid.addLayout(setinfoh, 1,2)
         
+        #Credits
+        creditlab = QLabel(self)
+        creditlab.setText('Created By: Dakota Madden-Fong')
+        setinfoh.addWidget(creditlab)
+        
         #Set Seclection Drop Down Menu
         setselectlab = QLabel(self)
         setselectlab.setText('Set:')
@@ -150,12 +155,8 @@ class MTGCardReader(QWidget):
         
         #Image Window
         imgwindow = QLabel(self)
-        grid.addWidget(imgwindow, 2,2)
+        grid.addWidget(imgwindow, 2,2,2,1)
         
-        #Credits
-        creditlab = QLabel(self)
-        creditlab.setText('Created By: Dakota Madden-Fong')
-        grid.addWidget(creditlab, 3,2)
         
         ##Card Info Vert
         
