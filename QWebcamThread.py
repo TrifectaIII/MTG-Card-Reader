@@ -36,7 +36,13 @@ class QWebcamThread(QThread):
     def run(self):
         try:
             while not self.done:
-                cvimg = cv2.resize(self.cvframe, (640,480))#, fx=1, fy=1) 
+                cvimg = self.cvframe
+                height, width, _ = cvimg.shape 
+                while (width > 1000):
+                    new_width = int(width/2)
+                    new_height = int(height/2)
+                    cvimg = cv2.resize(cvimg, (new_width,new_height) )#, fx=1, fy=1) 
+                    height, width, _ = cvimg.shape
                 cvimgRGB = cv2.cvtColor(cvimg, cv2.COLOR_BGR2RGB)
                 qpiximg = QPixmap(QImage(cvimgRGB, cvimgRGB.shape[1], cvimgRGB.shape[0], cvimgRGB.shape[1] * 3,QImage.Format_RGB888))
                 self.imgwindow.setPixmap(qpiximg)

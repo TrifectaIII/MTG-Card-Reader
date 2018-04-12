@@ -29,6 +29,12 @@ class compare2set:
     def compareimg(self, imageinput):
         try:
             camimg = imageinput
+            height, width, _ = camimg.shape
+            while (width > 1000):
+                new_width = int(width/2)
+                new_height = int(height/2)
+                camimg = cv2.resize(camimg, (new_width,new_height) )
+                height, width, _ = camimg.shape
             camimg2g = cv2.cvtColor(camimg, cv2.COLOR_BGR2GRAY)
         except:
             raise IOError('Cannot properly process input image')
@@ -77,4 +83,5 @@ class compare2set:
         # cv2.waitKey()
         # plt.imshow(test),plt.show()
         cv2.destroyAllWindows()
+        bestmatchimg = cv2.resize(bestmatchimg, (223,311))
         return (bestmatchname, bestmatchimg)

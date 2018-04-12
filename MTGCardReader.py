@@ -11,6 +11,8 @@ from mtg_json_get import getSets
 from QMtgPlainTextEdit import QMtgPlainTextEdit
 from QWebcamThread import QWebcamThread
 from QCompareSetThread import QCompareSetThread
+
+
 class MTGCardReader(QWidget):
     
     # readsig = pyqtSignal()
@@ -114,7 +116,7 @@ class MTGCardReader(QWidget):
         QToolTip.setFont(QFont('SansSerif', 10))
         
         setinfoh = QHBoxLayout()
-        grid.addLayout(setinfoh, 1,2)
+        grid.addLayout(setinfoh, 1,1,1,2)
         
         #Credits
         creditlab = QLabel(self)
@@ -150,7 +152,7 @@ class MTGCardReader(QWidget):
         readbtn.setToolTip('Press when your card is in the frame')
         readbtn.setEnabled(False)
         readbtn.setSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.Preferred)
-        grid.addWidget(readbtn, 1,1,3,1)
+        grid.addWidget(readbtn, 2,1,2,1)
         readbtn.setDefault(True)
         
         #Image Window
@@ -309,5 +311,9 @@ class MTGCardReader(QWidget):
 if __name__ == '__main__':
     
     app = QApplication(sys.argv)
+    # font = app.font()
+    # font.setPointSize(15)
+    # font.setBold(True)
+    # app.setFont(font)
     mtg_cr = MTGCardReader()
     sys.exit(app.exec_())
