@@ -25,6 +25,7 @@ def getSets():
             pass
         else:
             retsets.append(set)
+    retsets = sorted(retsets)
     return retsets
 
 class card_set_json:
