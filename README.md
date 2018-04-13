@@ -8,15 +8,15 @@ When loading up a set for the first time, the program may take 5 minutes or more
 
 
 ## Resources
-Uses Python 3, Qt5, PyQt5, MTG JSON, OpenCV, URLLib
+Uses MTG-JSON, Python 3, Qt5, PyQt5, OpenCV, URLLib
 
 https://mtgjson.com/
 
 https://www.python.org/
 
-https://www.riverbankcomputing.com/software/pyqt/download5
-
 http://doc.qt.io/qt-5/qt5-intro.html
+
+https://www.riverbankcomputing.com/software/pyqt/download5
 
 https://opencv.org/
 
