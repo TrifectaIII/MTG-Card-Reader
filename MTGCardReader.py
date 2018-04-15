@@ -119,9 +119,9 @@ class MTGCardReader(QWidget):
         grid.addLayout(setinfoh, 1,1,1,2)
         
         #Credits
-        creditlab = QLabel(self)
-        creditlab.setText('Created By: Dakota Madden-Fong')
-        setinfoh.addWidget(creditlab)
+        # creditlab = QLabel(self)
+        # creditlab.setText('Created By: Dakota Madden-Fong')
+        # setinfoh.addWidget(creditlab)
         
         #Set Seclection Drop Down Menu
         setselectlab = QLabel(self)
@@ -311,9 +311,9 @@ class MTGCardReader(QWidget):
 if __name__ == '__main__':
     
     app = QApplication(sys.argv)
-    # font = app.font()
-    # font.setPointSize(15)
-    # font.setBold(True)
-    # app.setFont(font)
+    font = app.font()
+    font.setPointSize(15)
+    font.setBold(True)
+    app.setFont(font)
     mtg_cr = MTGCardReader()
     sys.exit(app.exec_())
