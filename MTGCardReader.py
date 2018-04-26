@@ -91,6 +91,9 @@ class MTGCardReader(QWidget):
                 add1btn.setEnabled(False)
                 add4btn.setEnabled(False)
                 add10btn.setEnabled(False)
+                rem1btn.setEnabled(False)
+                rem4btn.setEnabled(False)
+                rem10btn.setEnabled(False)
                 textbox.setReadOnly(False)
                 #---------------------------
                 QApplication.processEvents()
@@ -165,29 +168,61 @@ class MTGCardReader(QWidget):
         cardinfov = QVBoxLayout()
         grid.addLayout(cardinfov, 1,3,3,1)
          
+        changeh = QHBoxLayout()
+        cardinfov.addLayout(changeh,2)
+        
+        addv = QVBoxLayout()
+        remv = QVBoxLayout()
+        changeh.addLayout(addv)
+        changeh.addLayout(remv)
+        
         #Add 1 to Text Button
         add1btn = QPushButton('Add 1', self)
         add1btn.setToolTip('Press to add this card to the text box')
         add1btn.setEnabled(False)
         add1btn.setSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.Preferred)
-        cardinfov.addWidget(add1btn)
+        addv.addWidget(add1btn)
         add1btn.setDefault(True)
+        
+        #Remove 1 from Text Button
+        rem1btn = QPushButton('Remove 1', self)
+        rem1btn.setToolTip('Press to remove 1 of this card from the text box')
+        rem1btn.setEnabled(False)
+        rem1btn.setSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.Preferred)
+        remv.addWidget(rem1btn)
+        rem1btn.setDefault(True)
         
         #Add 4 to Text Button
         add4btn = QPushButton('Add 4', self)
         add4btn.setToolTip('Press to add 4 of this card to the text box')
         add4btn.setEnabled(False)
         add4btn.setSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.Preferred)
-        cardinfov.addWidget(add4btn)
+        addv.addWidget(add4btn)
         add4btn.setDefault(True)
+        
+        #Remove 4 from Text Button
+        rem4btn = QPushButton('Remove 4', self)
+        rem4btn.setToolTip('Press to remove 4 of this card from the text box')
+        rem4btn.setEnabled(False)
+        rem4btn.setSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.Preferred)
+        remv.addWidget(rem4btn)
+        rem4btn.setDefault(True)
         
         #Add 10 to Text Button
         add10btn = QPushButton('Add 10', self)
         add10btn.setToolTip('Press to add 10 of this card to the text box')
         add10btn.setEnabled(False)
         add10btn.setSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.Preferred)
-        cardinfov.addWidget(add10btn)
+        addv.addWidget(add10btn)
         add10btn.setDefault(True)
+        
+        #Remove 10 from Text Button
+        rem10btn = QPushButton('Remove 10', self)
+        rem10btn.setToolTip('Press to remove 1 of this card from the text box')
+        rem10btn.setEnabled(False)
+        rem10btn.setSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.Preferred)
+        remv.addWidget(rem10btn)
+        rem10btn.setDefault(True)
          
         #Name of Matched Card
         name_match_lab = QLabel(self)
@@ -270,7 +305,7 @@ class MTGCardReader(QWidget):
         divideropth.addWidget(dividebtn)
         dividebtn.setDefault(True)
         
-        buttons = [add10btn,add4btn,add1btn,dividebtn,sidebtn,clearbtn,pastebtn,copybtn,savebtn,loadbtn,readbtn,setselect]
+        buttons = [rem10btn,rem4btn,rem1btn,add10btn,add4btn,add1btn,dividebtn,sidebtn,clearbtn,pastebtn,copybtn,savebtn,loadbtn,readbtn,setselect]
         
         #Webcam Thread
         camthread = QWebcamThread(imgwindow,self)
@@ -287,6 +322,9 @@ class MTGCardReader(QWidget):
         add1btn.clicked.connect(lambda:textbox.addtotext(1,name_match_lab))
         add4btn.clicked.connect(lambda:textbox.addtotext(4,name_match_lab))
         add10btn.clicked.connect(lambda:textbox.addtotext(10,name_match_lab))
+        rem1btn.clicked.connect(lambda:textbox.addtotext(-1,name_match_lab))
+        rem4btn.clicked.connect(lambda:textbox.addtotext(-4,name_match_lab))
+        rem10btn.clicked.connect(lambda:textbox.addtotext(-10,name_match_lab))
         loadbtn.clicked.connect(textbox.loadtext)
         savebtn.clicked.connect(textbox.savetext)
         copybtn.clicked.connect(textbox.copy_alltext)
