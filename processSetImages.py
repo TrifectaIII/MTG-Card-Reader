@@ -25,4 +25,4 @@ def processSetImages(imgdict):
         keypdict[key] = kp
         desdict[key] = des
     
-    return(keypdict, desdict, imgdict2g)
+    return(keypdict, desdict, imgdict2g, sift)

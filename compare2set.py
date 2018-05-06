@@ -14,11 +14,11 @@ class compare2set:
     # User Provided Info
     #--------------------------------------------------------------------
         (self.imgdict, self.namedict) = fetchSetImages(setcode)
-        (self.keypdict, self.desdict, self.imgdict2g) = processSetImages(self.imgdict)
+        (self.keypdict, self.desdict, self.imgdict2g, self.sift) = processSetImages(self.imgdict)
         #--------------------------------------------------------------------
         
         ## Surf Setup
-        self.sift = cv2.xfeatures2d.SIFT_create()
+        #self.sift = cv2.xfeatures2d.SIFT_create()
         #surf.setHessianThreshold(400)
         #surf.setExtended(True)
         
