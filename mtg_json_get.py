@@ -1,9 +1,6 @@
 import json
 
 jsonsets = json.loads(open('AllSets-x.json',encoding="utf8").read())
-
-def getSets():
-    return list(jsonsets.keys())
     
 def getSets():
     retsets = []

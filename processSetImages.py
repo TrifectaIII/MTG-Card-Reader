@@ -4,7 +4,7 @@
 # to grayscale. 
 
 # Returns dictionaries of keypoints, desciptions, and grayscale images keyed on
-# mtgjson unique ids
+# mtgjson unique ids, as well as the SIFT object itself
 
 import numpy as np
 import cv2
