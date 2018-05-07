@@ -319,7 +319,7 @@ class MTGCardReader(QWidget):
         camthread = QWebcamThread(imgwindow,self)
         #comparesetthread = QCompareSetThread(name_match_lab, img_match_lab, statuslab,setselect,blank,buttons,self)
         
-        ##Signal/Slot System
+        ##Signal/Slot System - Connets signals to slots
         
         setselect.activated[str].connect(switchset)
         readbtn.clicked.connect(lambda:read_match(compareset,camthread.getFrame()))

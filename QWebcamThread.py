@@ -56,4 +56,3 @@ class QWebcamThread(QThread):
             # if exception, signal for error message
             self.WebCamMissing()
         #QApplication.processEvents()
-            
