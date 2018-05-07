@@ -1,3 +1,5 @@
+## Additional methods to extend the QPlainTextEdit: allows all text options in the texta area of the program
+
 import sys
 from PyQt5.QtWidgets import QWidget, QApplication, QDesktopWidget,  QPlainTextEdit, QFileDialog
 from PyQt5.QtCore import Qt, pyqtSlot

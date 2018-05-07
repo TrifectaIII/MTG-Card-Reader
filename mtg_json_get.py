@@ -1,3 +1,5 @@
+#extracts data from MTG-JSON file
+
 import json
 
 jsonsets = json.loads(open('AllSets-x.json',encoding="utf8").read())

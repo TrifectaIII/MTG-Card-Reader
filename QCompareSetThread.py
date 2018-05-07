@@ -5,6 +5,8 @@ from PyQt5.QtCore import Qt, pyqtSlot, QThread, pyqtSignal
 import numpy as np
 import cv2
 import time
+## This file is not perational at the moment and is not hooked into the rest of the program.
+
 
 from compare2set import compare2set
 from mtg_json_get import getSets
