@@ -1,4 +1,4 @@
-## processSetImages - Dakota Madden-Fong
+## processSetImages - Dakota Madden-Fong May 2018
 
 # Calculates SIFT features and converts all images in a dictionary of cv2 images
 # to grayscale. 

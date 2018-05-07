@@ -1,3 +1,5 @@
+#Dakota Madden-Fong May 2018
+
 import sys
 from PyQt5.QtWidgets import QWidget, QToolTip, QMessageBox, QPushButton, QApplication, QDesktopWidget, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox,  QPlainTextEdit, QSizePolicy, QFileDialog
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QImage

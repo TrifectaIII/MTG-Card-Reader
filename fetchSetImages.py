@@ -1,4 +1,4 @@
-## fetchSetImages - Dakota Madden-Fong
+## fetchSetImages - Dakota Madden-Fong May 2018
 
 # Looks for a .dict and .names file for the specified set, if none are available
 # creates them by fetching image data based on urls provided by card_set_json

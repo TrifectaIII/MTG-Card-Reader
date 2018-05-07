@@ -1,10 +1,13 @@
 #extracts data from MTG-JSON file
+#Dakota Madden-Fong May 2018
 
 import json
 
+#read in json file
 jsonsets = json.loads(open('AllSets-x.json',encoding="utf8").read())
-    
+
 def getSets():
+    #return alphabetized list of all sets, removing sets for which no card images exist
     retsets = []
     for set in (list(jsonsets.keys())):
         cards = jsonsets[set]['cards']
@@ -28,6 +31,8 @@ def getSets():
     return retsets
 
 class card_set_json:
+    # gather info on a specified set
+    
     def __init__(self, setcode):
         try:
             self.cards = jsonsets[setcode]['cards']
@@ -37,12 +42,14 @@ class card_set_json:
         self.names = []
         for card in self.cards:
             self.names.append(card['name'])
-            
+        # self.names = list of all card names
         self.uids = []
         for card in self.cards:
             self.uids.append(card['id'])
+        # self.uids = list of all card unique ids
             
         self.multiverse_ids = []
+        
         empties = False
         exists = False
         for card in self.cards:
@@ -60,51 +67,10 @@ class card_set_json:
             print('All images accessible')
             
         
-        
+        # self.imgurls = list of all URLs to gatherer card images
         self.imgurls = []
         for id in self.multiverse_ids:
             if (id == None):
                 self.imgurls.append(None)
             else: 
                 self.imgurls.append('http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid='+str(id)+'&type=card')
-
-# class card_printings:
-#     def __init__(self, cardname):
-#         self.cards = Card.where(name=cardname).all()
-#         self.cards[:] = [card for card in self.cards if (cardname == card.name)]
-#         
-#         if (len(self.cards) == 0):
-#             raise NameError('No card found with that name')
-#         
-#         self.sets = []
-#         for card in self.cards:
-#             self.sets.append(card.set)
-#         
-#         self.imgurls = []
-#         for card in self.cards:
-#             self.imgurls.append(card.image_url)
-# 
-# # scryfall large image urls:
-# # https://img.scryfall.com/cards/png/en/ set / number .png
-# 
-# class card_set:
-#     def __init__(self, setcode):
-#         more = True
-#         self.cards = []
-#         pagenum = 1
-#         while more:
-#             newcards = Card.where(set=setcode).where(page=pagenum).all()
-#             self.cards += Card.where(set=setcode).where(page=pagenum).all()
-#             if (len(newcards)<100):
-#                 more = False
-#             else:
-#                 pagenum += 1
-#         
-#         self.cards[:] = [card for card in self.cards if (setcode == card.set)]
-#         
-#         if (len(self.cards) == 0):
-#             raise NameError('No card found with that set code')
-#         
-#         self.imgurls = []
-#         for card in self.cards:
-#             self.imgurls.append(card.image_url)

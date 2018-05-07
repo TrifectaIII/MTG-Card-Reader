@@ -1,6 +1,5 @@
-## Compare2Set - Dakota Madden-Fong
+## Compare2Set - Dakota Madden-Fong May 2018
 # Compares an image to a library of images from a set
-
 from urllib import request as urlreq
 import numpy as np
 import cv2
