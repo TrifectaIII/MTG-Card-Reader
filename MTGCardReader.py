@@ -111,7 +111,7 @@ class MTGCardReader(QWidget):
             
         def WebCamMissingDialog():
             # create error message window when QWebCamThread detects an error
-            reply = QMessageBox.question(self, 'Webcam Error',"Webcam Error:\n\nPlease ensure that your webcam is connected, then restart the program.", QMessageBox.Ok, QMessageBox.Ok)
+            reply = QMessageBox.question(self, 'Webcam Error',"Webcam Error:\n\nPlease ensure that your webcam is connected, then save your work and restart the program.", QMessageBox.Ok, QMessageBox.Ok)
         
         
         ##GUI Widget SETUP
