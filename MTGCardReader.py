@@ -1,4 +1,4 @@
-## MTGCardReader.py
+## MTGCardReader.py - The Main, Root File for the MTG Card Reader Program
 #Dakota Madden-Fong May 2018
 
 import sys
