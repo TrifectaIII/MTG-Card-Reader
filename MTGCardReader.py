@@ -1,3 +1,4 @@
+## MTGCardReader.py
 #Dakota Madden-Fong May 2018
 
 import sys
@@ -55,6 +56,7 @@ class MTGCardReader(QWidget):
         ##Functions
         
         def read_match(c2s,cvim):
+            # uses the compare2set object to identify a card
             print('Reading and Matching')
             name_match_lab.setText('Card: ')
             statuslab.setText('Reading Card...')
@@ -73,6 +75,7 @@ class MTGCardReader(QWidget):
         
         oldset = 'None'
         def switchset(text):
+            # creates a new compare2set object when the user select a new set
             global compareset
             global oldset
             if not (text == oldset):
@@ -107,10 +110,13 @@ class MTGCardReader(QWidget):
             return qpiximg
             
         def WebCamMissingDialog():
+            # create error message window when QWebCamThread detects an error
             reply = QMessageBox.question(self, 'Webcam Error',"Webcam Error:\n\nPlease ensure that your webcam is connected, then restart the program.", QMessageBox.Ok, QMessageBox.Ok)
-        ##Widgets
         
-        ##Left Side
+        
+        ##GUI Widget SETUP
+        
+        ##INPUT SECTION
         
         #Main Window
         grid = QGridLayout()
@@ -165,7 +171,7 @@ class MTGCardReader(QWidget):
         grid.addWidget(imgwindow, 2,2,2,1)
         
         
-        ##Card Info Vert
+        ##INFORMATION SECTION
         
         cardinfov = QVBoxLayout()
         grid.addLayout(cardinfov, 1,3,3,1)
@@ -238,7 +244,7 @@ class MTGCardReader(QWidget):
         img_match_lab.setPixmap(blank)
         cardinfov.addWidget(img_match_lab)
         
-        ##Text Vert
+        ##TEXT SECTION
         
         textv = QVBoxLayout()
         grid.addLayout(textv, 1,4,3,1)
@@ -313,7 +319,7 @@ class MTGCardReader(QWidget):
         camthread = QWebcamThread(imgwindow,self)
         #comparesetthread = QCompareSetThread(name_match_lab, img_match_lab, statuslab,setselect,blank,buttons,self)
         
-        ##Signals
+        ##Signal/Slot System
         
         setselect.activated[str].connect(switchset)
         readbtn.clicked.connect(lambda:read_match(compareset,camthread.getFrame()))
@@ -342,13 +348,13 @@ class MTGCardReader(QWidget):
                 btn.setEnabled(state)
         
         
-        ##Main Camera Loop
+        ##Start Main Camera Update Thread
         self.show()
         camthread.start()
         #comparesetthread.start()
         self.center()
 
-if __name__ == '__main__':
+if __name__ == '__main__':# If this file is the main script being run, run MTGCardReader as it's own window.
     
     app = QApplication(sys.argv)
     font = app.font()

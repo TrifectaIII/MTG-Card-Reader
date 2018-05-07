@@ -17,6 +17,7 @@ class QWebcamThread(QThread):
 
             
     def WebCamMissing(self):
+        # emit signal to trigger error message in MTGCardReader.py
         self.sig.emit()
         
     def __del__(self):
@@ -26,6 +27,7 @@ class QWebcamThread(QThread):
         super(QWebcamThread,self).__init__(parent=parent)
         self.imgwindow = imgwindow
         self.done = False
+        # on initialization, start reading from the webcam using OpenCV
         try:
             self.cap = cv2.VideoCapture(0)
             self.ret, self.cvframe = self.cap.read()
@@ -37,10 +39,10 @@ class QWebcamThread(QThread):
         
     def run(self):
         try:
-            while not self.done:
+            while not self.done:# update Webcam image every loop
                 cvimg = self.cvframe
-                height, width, _ = cvimg.shape 
-                while (width > 1000):
+                height, width, _ = cvimg.shape
+                while (width > 1000): #resize webcam images that are far too high resolution for the UI to handle
                     new_width = int(width/2)
                     new_height = int(height/2)
                     cvimg = cv2.resize(cvimg, (new_width,new_height) )#, fx=1, fy=1) 
@@ -51,6 +53,7 @@ class QWebcamThread(QThread):
                 self.imgwindow.update()
                 self.ret, self.cvframe = self.cap.read()
         except:
+            # if exception, signal for error message
             self.WebCamMissing()
         #QApplication.processEvents()
             

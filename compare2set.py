@@ -11,22 +11,19 @@ from processSetImages import processSetImages
 
 class compare2set:
     def __init__(self, setcode):
-    # User Provided Info
-    #--------------------------------------------------------------------
-        (self.imgdict, self.namedict) = fetchSetImages(setcode)
-        (self.keypdict, self.desdict, self.imgdict2g, self.sift) = processSetImages(self.imgdict)
-        #--------------------------------------------------------------------
-        
-        ## Surf Setup
-        #self.sift = cv2.xfeatures2d.SIFT_create()
-        #surf.setHessianThreshold(400)
-        #surf.setExtended(True)
+    # User Provides the SetCode
+        (self.imgdict, self.namedict) = fetchSetImages(setcode)# Get name dictionary and image dictionary from fetchSetImages
+        (self.keypdict, self.desdict, self.imgdict2g, self.sift) = processSetImages(self.imgdict)# Get keypoints dictionaries and SIFT onject from processSetImages
+    
         
         ##Matcher Steup
+        # create OpenCV keypoint matcher object
         self.bf = cv2.BFMatcher()
         print(setcode,'Set loaded')
         
+    # Compare an image to the card images and identify one as a match
     def compareimg(self, imageinput):
+        #accepts the webcam image as input
         try:
             camimg = imageinput
             height, width, _ = camimg.shape
@@ -39,6 +36,7 @@ class compare2set:
         except:
             raise IOError('Cannot properly process input image')
             
+        # compute keypoints for the webcam image
         (kpr, desr) = self.sift.detectAndCompute(camimg2g,None)    
         
         printsimages = []
@@ -49,7 +47,7 @@ class compare2set:
         printsmatcheslen = []
         printsnames = []
         
-        
+        #Loop through images to compare each one
         for key in self.imgdict:
             printsimages.append(self.imgdict[key])
             printsimages2g.append(self.imgdict2g[key])
@@ -59,29 +57,29 @@ class compare2set:
             printsdes.append(des)
             printsnames.append(self.namedict[key])
             
-            rawmatches = self.bf.knnMatch(desr,des, k=2)
+            rawmatches = self.bf.knnMatch(desr,des, k=2)# find 2 nearest negihbor keypoint matches
             matches = []
             for m,n in rawmatches:
-                if m.distance < 0.75*n.distance:
+                if m.distance < 0.75*n.distance:# use ratio test to determine if match is successful
                     matches.append([m])
             printsmatches.append(matches)
             printsmatcheslen.append(len(matches))
             
         
-        ## Find Three Best Matches and Display
-        #print("\n" * 100)
-        #print(printsmatcheslen)
+        ## Find Best Match and Display
         for x in range(3):
-            bestmatch = np.argmax(printsmatcheslen)
+            bestmatch = np.argmax(printsmatcheslen)# identify correct card by number of successful matches
             print("Match",(x+1),',',printsnames[bestmatch],':','with',printsmatcheslen[bestmatch],'feature matches')
             if x == 0:
                 bestmatchname = printsnames[bestmatch]
                 bestmatchimg = printsimages[bestmatch]
             printsmatcheslen[bestmatch] = -math.inf
+        #OpenCV GUI Code--------------------------------------------------------
         # cv2.namedWindow("Best Match: "+bestmatchname)
         # cv2.imshow("Best Match: "+bestmatchname, bestmatchimg)
         # cv2.waitKey()
         # plt.imshow(test),plt.show()
+        #-----------------------------------------------------------------------
         cv2.destroyAllWindows()
         bestmatchimg = cv2.resize(bestmatchimg, (223,311))
-        return (bestmatchname, bestmatchimg)
+        return (bestmatchname, bestmatchimg)# return the name and image of the identified card

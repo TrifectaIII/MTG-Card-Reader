@@ -22,10 +22,10 @@ def fetchSetImages(setcode):
     imgdict = dict()
     namedict = dict()
     
-    if (setcode+'.images') not in files:
+    if (setcode+'.images') not in files: # if .images file doesnt exist
         print(setcode +'.images','file not found, generating from gatherer now')
-        set = cardset(setcode)
-        for i in range(len(set.uids)):
+        set = cardset(setcode)# call card_set_json to get image URLs
+        for i in range(len(set.uids)):# fetch all card images from URLs
             url = set.imgurls[i]
             if (url != None):
                 url_response = urlreq.urlopen(url)
@@ -34,11 +34,11 @@ def fetchSetImages(setcode):
                 imgdict[set.uids[i]] = img
                 print(i)
                 
-        wfile = open(('SetFiles/'+setcode +'.images'), 'wb')
+        wfile = open(('SetFiles/'+setcode +'.images'), 'wb')#save images to local file
         pickle.dump(imgdict, wfile)
         wfile.close()
     
-    if (setcode+'.names') not in files:
+    if (setcode+'.names') not in files: # if .names file doesnt exist
         print(setcode +'.dict','file not found, generating from gatherer now')
         set = cardset(setcode)
         for i in range(len(set.uids)):
@@ -47,17 +47,17 @@ def fetchSetImages(setcode):
                 namedict[set.uids[i]] = set.names[i]
                 print(i)
                 
-        wfile = open(('SetFiles/'+setcode +'.names'), 'wb')
+        wfile = open(('SetFiles/'+setcode +'.names'), 'wb')#save names to local file
         pickle.dump(namedict, wfile)
         wfile.close()
         
     print(setcode +'.images','file found')
-    rfile = open(('SetFiles/'+ setcode + '.images'), 'rb')
+    rfile = open(('SetFiles/'+ setcode + '.images'), 'rb')# read .images file from local disk
     imgdictret = pickle.load(rfile)
     rfile.close()
     
     print(setcode +'.names','file found')
-    rfile = open(('SetFiles/'+ setcode + '.names'), 'rb')
+    rfile = open(('SetFiles/'+ setcode + '.names'), 'rb')# read .names file from local disk
     namedictret = pickle.load(rfile)
     rfile.close()
     
