@@ -4,6 +4,8 @@ Reads an mtg card in front of a webcam and matches it to an existing database of
 
 Run MTGCardReader.py to start the program.
 
+Run install_packages.py to install the requisite packages (NOTE: This is currently untested)
+
 When loading up a set for the first time, the program may take 5 minutes or more to download and store all images from that set.
 
 
