@@ -16,8 +16,11 @@ from mtg_json_get import card_set_json as cardset
 import os
 
 def fetchSetImages(setcode):
+    if not os.path.exists('./SetFiles'):
+        os.makedirs('./SetFiles')
     
     files = os.listdir('./SetFiles')
+        
     
     imgdict = dict()
     namedict = dict()
