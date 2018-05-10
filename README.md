@@ -1,6 +1,6 @@
 # MTGCardReader
 
-Reads an mtg card in front of a webcam and matches it to an existing database of cards in a user-specified set.
+Reads a Magic: The Gathering card in front of a webcam and identifies it in an existing database of cards of a user-specified set.
 
 Run MTGCardReader.py to start the program.
 
