@@ -357,9 +357,9 @@ class MTGCardReader(QWidget):
 if __name__ == '__main__':# If this file is the main script being run, run MTGCardReader as it's own window.
     
     app = QApplication(sys.argv)
-    font = app.font()
-    font.setPointSize(15)
-    font.setBold(True)
-    app.setFont(font)
+    # font = app.font()
+    # font.setPointSize(15)
+    # font.setBold(True)
+    # app.setFont(font)
     mtg_cr = MTGCardReader()
     sys.exit(app.exec_())
