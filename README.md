@@ -8,6 +8,7 @@ Run install_packages.py to install the requisite packages (NOTE: This is current
 
 When loading up a set for the first time, the program may take 5 minutes or more to download and store all images from that set.
 
+[See it in action here!](https://www.youtube.com/watch?v=KvsBkOgKNgQ)
 
 ## Resources
 Uses MTG-JSON, Python 3, Qt5, PyQt5, OpenCV, URLLib
