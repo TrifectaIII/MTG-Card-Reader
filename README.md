@@ -2,9 +2,9 @@
 
 Reads a Magic: The Gathering card in front of a webcam and identifies it in an existing database of cards of a user-specified set.
 
-Run MTGCardReader.py to start the program.
+Run __MTGCardReader.py__ to start the program.
 
-Run install_packages.py to install the requisite packages (NOTE: This is currently untested)
+Run __install_packages.py__ to install the requisite packages _(NOTE: This is currently untested)_
 
 When loading up a set for the first time, the program may take 5 minutes or more to download and store all images from that set.
 
