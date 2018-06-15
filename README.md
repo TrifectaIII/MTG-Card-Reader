@@ -1,4 +1,4 @@
-# MTGCardReader
+# MTG-Card-Reader
 
 Reads a Magic: The Gathering card in front of a webcam and identifies it in an existing database of cards of a user-specified set.
 
