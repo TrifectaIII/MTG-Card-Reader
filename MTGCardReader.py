@@ -175,7 +175,7 @@ class MTGCardReader(QWidget):
         
         cardinfov = QVBoxLayout()
         grid.addLayout(cardinfov, 1,3,3,1)
-         
+        
         changeh = QHBoxLayout()
         cardinfov.addLayout(changeh,2)
         
