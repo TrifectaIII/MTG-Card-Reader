@@ -3,8 +3,19 @@
 
 import json
 
+#unzip if zipped only
+from pathlib import Path
+unzipped = Path('AllSets.json')
+if not(unzipped.is_file()):
+    print ('Unzipping zip file containing the json file')
+    import zipfile
+    zip_ref = zipfile.ZipFile('AllSets.json.zip', 'r')
+    zip_ref.extractall()
+    zip_ref.close()
+
 #read in json file
-jsonsets = json.loads(open('AllSets-x.json',encoding="utf8").read())
+jsonsets = json.loads(open('AllSets.json',encoding="utf8").read())
+print('json file loaded')
 
 def getSets():
     #return alphabetized list of all sets, removing sets for which no card images exist
@@ -16,7 +27,7 @@ def getSets():
         multiverse_ids = []
         for card in cards:
             try:
-                multiverse_ids.append(card['multiverseid'])
+                multiverse_ids.append(card['multiverseId'])
                 exists = True
             except:
                 multiverse_ids.append(None)
@@ -45,7 +56,7 @@ class card_set_json:
         # self.names = list of all card names
         self.uids = []
         for card in self.cards:
-            self.uids.append(card['id'])
+            self.uids.append(card['uuid'])
         # self.uids = list of all card unique ids
             
         self.multiverse_ids = []
@@ -54,7 +65,7 @@ class card_set_json:
         exists = False
         for card in self.cards:
             try:
-                self.multiverse_ids.append(card['multiverseid'])
+                self.multiverse_ids.append(card['multiverseId'])
                 exists = True
             except:
                 self.multiverse_ids.append(None)
