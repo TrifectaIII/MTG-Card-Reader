@@ -13,7 +13,7 @@ class compare2set:
     def __init__(self, setcode):
     # User Provides the SetCode
         (self.imgdict, self.namedict) = fetchSetImages(setcode)# Get name dictionary and image dictionary from fetchSetImages
-        (self.keypdict, self.desdict, self.imgdict2g, self.sift) = processSetImages(self.imgdict)# Get keypoints dictionaries and SIFT onject from processSetImages
+        (self.keypdict, self.desdict, self.imgdict2g, self.sift) = processSetImages(self.imgdict)# Get keypoints dictionaries and SIFT object from processSetImages
     
         
         ##Matcher Steup
