@@ -4,6 +4,10 @@ Reads a Magic: The Gathering card in front of a webcam and identifies it in an e
 
 [__See it in action here!__](https://www.youtube.com/watch?v=KvsBkOgKNgQ)
 
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=KvsBkOgKNgQ
+" target="_blank"><img src="http://img.youtube.com/vi/KvsBkOgKNgQ/0.jpg" 
+alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
+
 Run __MTGCardReader.py__ to start the program.
 
 When loading up a set for the first time, the program may take 5 minutes or more to download and store all images from that set.
@@ -29,3 +33,6 @@ https://pypi.python.org/pypi/opencv-contrib-python
 
 https://docs.python.org/3/library/urllib.html
 
+## About Me
+
+I am a recent university grad currently living and looking for a job in San Francisco. If you would like to contact me about this software project (or about anything else) please send an email to maddenfong@gmail.com
