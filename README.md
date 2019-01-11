@@ -6,7 +6,7 @@ Reads a Magic: The Gathering card in front of a webcam and identifies it in an e
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=KvsBkOgKNgQ
 " target="_blank"><img src="http://img.youtube.com/vi/KvsBkOgKNgQ/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
+width="240" height="180" border="10" /></a>
 
 Run __MTGCardReader.py__ to start the program.
 
