@@ -14,7 +14,10 @@ if not(unzipped.is_file()):
     zip_ref.close()
 
 #read in json file
-jsonsets = json.loads(open('AllSets.json',encoding="utf8").read())
+try:
+    jsonsets = json.loads(open('AllSets.json',encoding="utf8").read())
+except:
+    raise Exception('Please ensure you are running 64 bit Python')
 print('json file loaded')
 
 def getSets():
