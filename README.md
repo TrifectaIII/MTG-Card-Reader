@@ -35,4 +35,4 @@ https://docs.python.org/3/library/urllib.html
 
 ## About Me
 
-I am a recent university grad currently living and looking for a job in San Francisco. If you would like to contact me about this software project (or about anything else) please send an email to maddenfong@gmail.com
+I am a recent university grad currently living and looking for a job in San Francisco. If you would like to contact me about this software project (or anything else) please send an email to maddenfong@gmail.com
