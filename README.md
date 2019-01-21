@@ -8,7 +8,7 @@ Reads a Magic: The Gathering card in front of a webcam and identifies it in an e
 " target="_blank"><img src="http://img.youtube.com/vi/KvsBkOgKNgQ/0.jpg" 
 width="240" height="180" border="10" /></a>
 
-Run __MTGCardReader.py__ to start the program.
+Download the Allset.json file (zipped or unzipped) from the MTGJSON website listed below, and place in project folder. Then run __MTGCardReader.py__ to start the program.
 
 When loading up a set for the first time, the program may take 5 minutes or more to download and store all images from that set.
 
