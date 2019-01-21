@@ -16,7 +16,7 @@ if not(unzipped.is_file()):
 #read in json file
 try:
     jsonsets = json.loads(open('AllSets.json',encoding="utf8").read())
-except:
+except MemoryError:
     raise Exception('Please ensure you are running 64 bit Python')
 print('json file loaded')
 
