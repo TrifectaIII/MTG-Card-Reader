@@ -12,7 +12,7 @@ Run __MTGCardReader.py__ to start the program.
 
 When loading up a set for the first time, the program may take 5 minutes or more to download and store all images from that set.
 
-Run __install_packages.py__ to install the requisite packages _(NOTE: This is currently untested)_
+Run __install_packages.py__ to install the requisite packages _(NOTE: This is mostly untested)_
 
 Open __Thesis Paper - MTG Card Reader.pdf__ to read about this project in more detail.
 
@@ -35,4 +35,4 @@ https://docs.python.org/3/library/urllib.html
 
 ## About Me
 
-I am a recent university grad currently living and looking for a job in San Francisco. If you would like to contact me about this software project (or about anything else) please send an email to maddenfong@gmail.com
+I am a recent university grad currently living and looking for a job in San Francisco. If you would like to contact me about this software project (or anything else) please send an email to maddenfong@gmail.com
