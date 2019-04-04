@@ -23,13 +23,9 @@ https://mtgjson.com/
 
 https://www.python.org/
 
-http://doc.qt.io/qt-5/qt5-intro.html
-
 https://www.riverbankcomputing.com/software/pyqt/download5
 
-https://opencv.org/
-
-https://pypi.python.org/pypi/opencv-contrib-python
+https://pypi.org/project/opencv-contrib-python/3.4.2.17/
 
 https://docs.python.org/3/library/urllib.html
 
