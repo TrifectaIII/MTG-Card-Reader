@@ -23,17 +23,7 @@ Run __install_packages.py__ to install the requisite packages _(NOTE: This is mo
 Open __Thesis Paper - MTG Card Reader.pdf__ to read about this project in more detail.
 
 ## Resources
-Uses MTGJSON, Python 3, Qt5, PyQt5, OpenCV, URLLib
-
-https://mtgjson.com/
-
-https://www.python.org/
-
-https://www.riverbankcomputing.com/software/pyqt/download5
-
-https://pypi.org/project/opencv-python/
-
-https://docs.python.org/3/library/urllib.html
+Uses [MTGJSON](https://mtgjson.com/), [Python 3](https://www.python.org/), [PyQt5](https://www.riverbankcomputing.com/software/pyqt/download5), [OpenCV](https://pypi.org/project/opencv-python/)
 
 ## About Me
 
