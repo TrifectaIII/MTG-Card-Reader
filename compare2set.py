@@ -18,7 +18,7 @@ class compare2set:
         
         ##Matcher Steup
         # create OpenCV keypoint matcher object
-        self.bf = cv2.BFMatcher()
+        self.bf = cv2.BFMatcher(cv2.NORM_HAMMING)
         print(setcode,'Set loaded')
         
     # Compare an image to the card images and identify one as a match
@@ -59,9 +59,13 @@ class compare2set:
             
             rawmatches = self.bf.knnMatch(desr,des, k=2)# find 2 nearest negihbor keypoint matches
             matches = []
-            for m,n in rawmatches:
-                if m.distance < 0.75*n.distance:# use ratio test to determine if match is successful
-                    matches.append([m])
+            for pair in rawmatches:
+                try:
+                    m,n = pair
+                    if m.distance < 0.75*n.distance:# use ratio test to determine if match is successful
+                        matches.append([m])
+                except ValueError:
+                    pass
             printsmatches.append(matches)
             printsmatcheslen.append(len(matches))
             
