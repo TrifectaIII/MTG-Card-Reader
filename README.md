@@ -6,7 +6,7 @@ At the moment, this original version of the project is experiencing some major c
 
 # MTG-Card-Reader
 
-Reads a Magic: The Gathering card in front of a webcam and identifies it in an existing database of cards of a user-specified set.
+Reads a Magic: The Gathering card in front of a webcam and identifies it in a database of cards from a user-specified set.
 
 [__See it in action here!__](https://www.youtube.com/watch?v=KvsBkOgKNgQ)
 
