@@ -1,3 +1,9 @@
+## UPDATE (5/29/2019)
+### V2.0
+I am happy to report that [v2.0 of MTG-Card-Reader](https://github.com/TrifectaIII/MTG-Card-Reader-Web), a web-based in-browser version is in active development. If you have any interest in contributing to development of v2.0, send me an e-mail at maddenfong@gmail.com, I am a complete novice regarding web hosting/web deployment of a project like this and could use some help.
+### A note on this version
+At the moment, this original version of the project is experiencing some major crashing issues (at least on my machine) but they are not throwing error messages and I'm too busy with v2.0 to hunt them down, sorry ☹️. I recently swapped the feature description algorithm from SIFT to ORB (which means any semi-recent version of opencv-python is good, don't need specific versions of -contrib anymore) but the crashes were happening before that.
+
 # MTG-Card-Reader
 
 Reads a Magic: The Gathering card in front of a webcam and identifies it in an existing database of cards of a user-specified set.
@@ -25,7 +31,7 @@ https://www.python.org/
 
 https://www.riverbankcomputing.com/software/pyqt/download5
 
-https://pypi.org/project/opencv-contrib-python/3.4.2.17/
+https://pypi.org/project/opencv-python/
 
 https://docs.python.org/3/library/urllib.html
 
