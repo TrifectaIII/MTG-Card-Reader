@@ -1,6 +1,6 @@
 ## UPDATE (5/29/2019)
 ### V2.0
-I am happy to report that [MTG-Card-Reader v2.0](https://github.com/TrifectaIII/MTG-Card-Reader-Web), a web-based in-browser version is in active development. If you have any interest in contributing to development of v2.0, send me an e-mail at maddenfong@gmail.com. I am a complete novice regarding web hosting/web deployment of a project like this and could use some help.
+I am happy to report that [MTG-Card-Reader 2.0](https://github.com/TrifectaIII/MTG-Card-Reader-Web), a web-based in-browser version is in active development. If you have any interest in contributing to development of v2.0, send me an e-mail at maddenfong@gmail.com. I am a complete novice regarding web hosting/web deployment of a project like this and could use some help.
 ### A note on this version
 At the moment, this original version of the project is experiencing some major crashing issues (at least on my machine) but they are not throwing error messages and I'm too busy with v2.0 to hunt them down, sorry ☹️. I recently swapped the feature description algorithm from SIFT to ORB (which means any semi-recent version of opencv-python is good, don't need specific versions of -contrib anymore) but the crashes were happening before that.
 
