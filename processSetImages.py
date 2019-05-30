@@ -13,7 +13,8 @@ import os
 def processSetImages(imgdict):
     
     # create SIFT object
-    sift = cv2.xfeatures2d.SIFT_create()
+    #sift = cv2.xfeatures2d.SIFT_create()
+    orb =  cv2.ORB_create()
     
     keypdict = dict()
     desdict = dict()
@@ -22,8 +23,8 @@ def processSetImages(imgdict):
     for key in imgdict:# calculate keypoints for all card images in the set
         img2g = cv2.cvtColor(imgdict[key], cv2.COLOR_BGR2GRAY)
         imgdict2g[key] = img2g
-        (kp, des) = sift.detectAndCompute(img2g,None)
+        (kp, des) = orb.detectAndCompute(img2g,None)
         keypdict[key] = kp
         desdict[key] = des
     # pass along everything including the sift object
-    return(keypdict, desdict, imgdict2g, sift)
+    return(keypdict, desdict, imgdict2g, orb)
